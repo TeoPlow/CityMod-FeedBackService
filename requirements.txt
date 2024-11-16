@@ -1,0 +1,5 @@
+sqlalchemy # 
+psycopg2 # драйвер для PostgreSQL
+
+flask
+
