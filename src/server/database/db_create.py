@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from server.database.db_connection import engine
 from config import logger_config
+from datetime import datetime
 import logging
 import logging.config
 
@@ -30,7 +31,7 @@ class Review(Base):
     id = Column(BigInteger, primary_key=True)
     user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)
     review = Column(Text, nullable=False)
-    time = Column(TIMESTAMP, nullable=False)
+    time = Column(TIMESTAMP, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     user = relationship('User', back_populates='reviews')
 
@@ -42,7 +43,7 @@ class BugReport(Base):
     user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)
     message = Column(Text, nullable=False)
     files_id = Column(BigInteger, ForeignKey('files.id'), nullable=True)
-    time = Column(TIMESTAMP, nullable=False)
+    time = Column(TIMESTAMP, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     user = relationship('User', back_populates='bug_reports')
     file = relationship('File', back_populates='bug_reports')
@@ -55,7 +56,7 @@ class Offer(Base):
     user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)
     offer = Column(Text, nullable=False)
     files_id = Column(BigInteger, ForeignKey('files.id'), nullable=True)
-    time = Column(TIMESTAMP, nullable=False)
+    time = Column(TIMESTAMP, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     user = relationship('User', back_populates='offers')
     file = relationship('File', back_populates='offers')
@@ -69,7 +70,7 @@ class File(Base):
     file_name = Column(Text, nullable=False)
     file_info = Column(Text, nullable=True)
     file_path = Column(Text, nullable=False)
-    time = Column(TIMESTAMP, nullable=False)
+    time = Column(TIMESTAMP, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     bug_reports = relationship('BugReport', back_populates='file')
     offers = relationship('Offer', back_populates='file')
@@ -88,7 +89,7 @@ class Mod(Base):
     game_versions = Column(Text, nullable=False)
     changelog = Column(Text, nullable=False)
     files_id = Column(BigInteger, ForeignKey('files.id'), nullable=False)
-    time = Column(TIMESTAMP, nullable=False)
+    time = Column(TIMESTAMP, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     file = relationship('File', back_populates='mods')
 
@@ -100,7 +101,7 @@ class Map(Base):
     name = Column(Text, nullable=False)
     changelog = Column(Text, nullable=False)
     files_id = Column(BigInteger, ForeignKey('files.id'), nullable=False)
-    time = Column(TIMESTAMP, nullable=False)
+    time = Column(TIMESTAMP, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     file = relationship('File', back_populates='maps')
 
@@ -112,7 +113,7 @@ class OtherContent(Base):
     name = Column(Text, nullable=False)
     info = Column(Text, nullable=False)
     files_id = Column(BigInteger, ForeignKey('files.id'), nullable=False)
-    time = Column(TIMESTAMP, nullable=False)
+    time = Column(TIMESTAMP, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     file = relationship('File', back_populates='other_contents')
 

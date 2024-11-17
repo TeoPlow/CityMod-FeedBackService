@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityMod – Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar">
+        <a href="/send_review">Send Review</a>
+        <a href="/send_bug_report">Send Bug Report</a>
+        <a href="/send_offer">Send Offer</a>
+        <a href="/mods">Mods</a>
+        <a href="/maps">Maps</a>
+        <a href="/other_content">Other Content</a>
+    </nav>
+
+    <!-- Слои изображений -->
+    <div class="layers">
+        <img src="static/images/sky.png" alt="Background Layer" class="layer">
+        <img src="static/images/gray_city.png" alt="Second Layer" class="layer">
+        <img src="static/images/black_city.png" alt="Third Layer" class="layer">
+        <img src="static/images/sun.png" alt="Fourth Layer" class="layer">
+        <img src="static/images/text.png" alt="Fifth Layer" class="layer">
+    </div>
+</body>
+</html>
