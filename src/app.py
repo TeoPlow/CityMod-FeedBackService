@@ -4,8 +4,9 @@ import logging.config
 import server.database.db_create as db
 from server.database.db_connection import session
 from server.core.registration import user_register
-from server.core.login import user_login
+from server.core.login import user_login, login_required
 from server.handlers.mods import fetch_all_mods
+from server.handlers.sends import send_review_handler, send_bug_report_handler, send_offer_handler
 
 from flask import Flask, render_template, render_template_string, request, jsonify
 from server import main
@@ -26,27 +27,36 @@ def home():
 
 
 @app.route('/send_review', methods=['GET', 'POST'])
+@login_required
 def send_review():
     if request.method == 'POST':
-        return("Отправка отзыва")
+        logger.info("Отправка отзыва")
+        data = request.json
+        return send_review_handler(data)
 
     elif request.method == 'GET':
         return render_template("send_review.html")
 
 
 @app.route('/send_bug_report', methods=['GET', 'POST'])
+@login_required
 def send_bug_report():
     if request.method == 'POST':
-        return("Отправка баг репорта")
+        logger.info("Отправка баг репорта")
+        data = request.json
+        return send_bug_report_handler(data)
 
     elif request.method == 'GET':
         return render_template("send_bug_report.html")
 
 
 @app.route('/send_offer', methods=['GET', 'POST'])
+@login_required
 def send_offer():
     if request.method == 'POST':
-        return("Отправка предложения")
+        logger.info("Отправка предложения")
+        data = request.json
+        return send_offer_handler(data)
 
     elif request.method == 'GET':
         return render_template("send_offer.html")
@@ -70,9 +80,9 @@ def other_content():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        logger.info("Отправляю запрос на регистрацию")
         data = request.json
-        message, request_code = user_register(data)
-        return jsonify(message), request_code
+        return user_register(data)
 
     elif request.method == 'GET':
         return render_template("register.html")
@@ -81,9 +91,9 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        logger.info("Отправляю запрос на логирование")
         data = request.json
-        message, request_code = user_login(data)
-        return jsonify(message), request_code
+        return user_login(data)
 
     elif request.method == 'GET':
         return render_template("login.html")

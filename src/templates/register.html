@@ -28,7 +28,7 @@
     </nav>
 
     <!-- Контакты -->
-    <p class="contacts">Contacts - citymod@ya.ru</p>
+    <p class="contacts">Contacts - citymodz@yandex.com</p>
 
     <!-- Светило -->
     <nav class="orb">
@@ -43,5 +43,40 @@
     </div>
     <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
+
+    <form id="registerForm" class="inputform">
+    <input type="text" name="name" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <nav class="to_registration">
+            <a href="/login">Попробовать войти</a>
+        </nav>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+
+    <script>
+        const form = document.getElementById("registerForm");
+    
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+    
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+    
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+    
+            if (response.ok) {
+                alert("Register successful!");
+            } else {
+                alert("Register failed");
+            }
+        });
+    </script>
 </body>
 </html>

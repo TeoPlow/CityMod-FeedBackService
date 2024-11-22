@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CityMod – Bug Report</title>
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/send_bug_report.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/send_bug_report.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}">
 </head>
 <body>
@@ -28,7 +28,7 @@
     </nav>
 
     <!-- Контакты -->
-    <p class="contacts">Contacts - citymod@ya.ru</p>
+    <p class="contacts">Contacts - citymodz@yandex.com</p>
 
     <!-- Светило -->
     <nav class="orb">
@@ -43,5 +43,36 @@
     </div>
     <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
+
+    <form id="bugReportForm" class="inputform"></form>
+        <input type="text" name="bugReport" placeholder="Your Bug Report" required>
+        <!-- Тут нопка с загрузкой файлов -->
+         
+        <button type="submit">Отправить</button>
+    </form>
+    <script>
+        const form = document.getElementById("bugReportForm");
+    
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+    
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+    
+            const response = await fetch('/send_bug_report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+    
+            if (response.ok) {
+                alert("The Bug Report has been sent successfully!");
+            } else {
+                alert("The Bug Report has not been sent.");
+            }
+        });
+    </script>
 </body>
 </html>

@@ -28,7 +28,7 @@
     </nav>
 
     <!-- Контакты -->
-    <p class="contacts">Contacts - citymod@ya.ru</p>
+    <p class="contacts">Contacts - citymodz@yandex.com</p>
 
     <!-- Светило -->
     <nav class="orb">
@@ -44,13 +44,15 @@
     <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
 
-    <form id="loginForm" class="loginform">
-        <input type="name" name="name" placeholder="Username" required>
-        <input type="email" name="email" placeholder="Email" required>
+    <form id="loginForm" class="inputform">
+        <input type="email_or_name" name="email_or_name" placeholder="Email or Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <label>
             <input type="checkbox" name="remember_me"> Не выходить
         </label>
+        <nav class="to_registration">
+            <a href="/register">Зарегистрироваться</a>
+        </nav>
         <button type="submit">Войти</button>
     </form>
     

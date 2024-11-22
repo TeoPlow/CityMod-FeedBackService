@@ -15,7 +15,7 @@ Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session = Session()
 
 def get_db():
-    logging.info(f"Запрос к БД")
+    logger.info(f"Запрос к БД")
     db = Session()
     try:
         yield db

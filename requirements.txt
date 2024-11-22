@@ -1,6 +1,7 @@
-sqlalchemy # 
+sqlalchemy # работа с БД через Python
 psycopg2 # драйвер для PostgreSQL
 
-flask
-python-dotenv
+flask # работа с сайтом
+python-dotenv # передача ключа
+PyJWT # хэширование паролей
 

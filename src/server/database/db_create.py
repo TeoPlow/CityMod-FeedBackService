@@ -21,7 +21,7 @@ class User(Base):
     id = Column(BigInteger, primary_key=True)
     name = Column(Text, nullable=False)
     email = Column(Text, nullable=False)
-    password_hash = Column(String(128), nullable=False)
+    password_hash = Column(String(256), nullable=False)
 
     def set_password(self, password: str):
         self.password_hash = generate_password_hash(password)
