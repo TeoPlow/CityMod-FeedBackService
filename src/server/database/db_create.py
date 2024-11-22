@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Text, BigInteger, ForeignKey, TIMESTAMP
+from sqlalchemy import Column, Integer, Text, BigInteger, ForeignKey, TIMESTAMP, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from server.database.db_connection import engine
@@ -6,6 +6,8 @@ from config import logger_config
 from datetime import datetime
 import logging
 import logging.config
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 logger = logging.getLogger('server')
@@ -19,6 +21,13 @@ class User(Base):
     id = Column(BigInteger, primary_key=True)
     name = Column(Text, nullable=False)
     email = Column(Text, nullable=False)
+    password_hash = Column(String(128), nullable=False)
+
+    def set_password(self, password: str):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str):
+        return check_password_hash(self.password_hash, password)
 
     reviews = relationship('Review', back_populates='user')
     bug_reports = relationship('BugReport', back_populates='user')
@@ -120,3 +129,6 @@ class OtherContent(Base):
 def update_database():
     logger.info(f"Обновляю таблицы в базе данных")
     Base.metadata.create_all(bind=engine)
+
+if __name__ == "__main__":
+    update_database()

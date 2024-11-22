@@ -1,0 +1,157 @@
+@font-face {
+    font-family: 'MinecraftFont';
+    src: url('minecraft.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* Сброс стилей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'MinecraftFont';
+    color: white;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* Навигационная панель */
+.navbar {
+    position: absolute;
+    top: 10px;
+    right: 100px;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 10px 20px;
+    border-radius: 8px;
+    z-index: 2;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #ffffff;
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.8);
+    
+}
+
+.navbar a:hover {
+    /* text-decoration: underline; */
+    font-size: 18px;
+    color: #373737;
+}
+
+/* Панель Контента */
+.contentbar {
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 10px 20px;
+    border-radius: 8px;
+    z-index: 2;
+}
+
+.contentbar a {
+    text-decoration: none;
+    color: #ffffff;
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.8);
+}
+
+.contentbar a:hover {
+    /* text-decoration: underline; */
+    font-size: 18px;
+    color: #373737;
+}
+
+.contacts {
+    position: absolute;
+    bottom: 10px;
+    right: 100px;
+    text-decoration: none;
+    color: #ffffff;
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.8);
+    z-index: 0;
+}
+
+/* Панель названия */
+.namebar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 10px 20px;
+    border-radius: 8px;
+    z-index: 2;
+}
+
+.namebar a {
+    text-decoration: none;
+    color: #ffffff;
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 48px;
+    text-shadow: -3px 3px 1px rgba(0, 0, 0, 0.8);
+}
+
+.namebar a:hover {
+    /* text-decoration: underline; */
+    font-size: 52px;
+    color: #373737;
+}
+
+/* Слои изображений */
+.background-layers {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.background-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.orb {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 7vh;
+    height: 7vh;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.orb img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+}
+
+.orb:hover img {
+    transform: scale(1.04); /* Эффект при наведении */
+}
