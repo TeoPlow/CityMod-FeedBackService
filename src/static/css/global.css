@@ -161,7 +161,7 @@ body {
     top: 50%; /* Центрирование по вертикали */
     left: 50%; /* Центрирование по горизонтали */
     transform: translate(-50%, -50%); /* Сдвиг для точного центрирования */
-    width: 400px; /* Ширина окна */
+    width: 500px; /* Ширина окна */
     padding: 20px; /* Внутренние отступы */
     background-color: #ffffff98; /* Полупрозрачный белый фон */
     border-radius: 12px;
@@ -169,27 +169,19 @@ body {
     z-index: 5; /* Уровень слоя */
 }
 
-/* Дополнительные стили для элементов внутри формы */
-.inputform input {
-    width: 100%; /* Ширина на всю форму */
-    padding: 10px; /* Внутренние отступы */
-    margin-bottom: 15px; /* Отступ между элементами */
-    border: 1px solid #ccc; /* Граница полей ввода */
-    border-radius: 6px;
-    font-size: 16px; /* Размер шрифта */
+.file-upload-menu {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 300px;
+    background: #f9f9f9;
 }
-
-.inputform button {
-    width: 100%; /* Кнопка на всю ширину формы */
-    padding: 10px; /* Внутренние отступы */
-    background-color: #0066cc; /* Зеленый цвет кнопки */
-    color: white; /* Белый текст */
-    border: none; /* Без границ */
-    border-radius: 6px;
-    font-size: 16px; /* Размер шрифта */
-    cursor: pointer; /* Указатель при наведении */
-}
-
-.inputform button:hover {
-    background-color: #0055a9; /* Темнее при наведении */
+.file-upload-menu input,
+.file-upload-menu textarea,
+.file-upload-menu button {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 8px;
 }

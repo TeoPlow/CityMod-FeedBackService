@@ -1,4 +1,3 @@
-sqlalchemy # работа с БД через Python
 psycopg2 # драйвер для PostgreSQL
 
 flask # работа с сайтом

@@ -9,4 +9,3 @@ from server.database.db_connection import get_db
 logger = logging.getLogger('server')
 logging.config.dictConfig(logger_config)
 
-update_database()

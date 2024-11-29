@@ -44,35 +44,58 @@
     <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
 
-    <form id="bugReportForm" class="inputform"></form>
-        <input type="text" name="bugReport" placeholder="Your Bug Report" required>
-        <!-- Тут нопка с загрузкой файлов -->
-         
+    <form id="bugReportForm" class="inputform" method="POST">
+        <h1>Leave your bug report</h1>
+        <textarea name="bugReport" id="bugReport" placeholder="..." maxlength="1024" required></textarea>     
+        <button type="button" id="openFileMenuButton">Загрузить файл</button>
+    
+        {% include 'addons/file_upload_menu.html' %}
+    
         <button type="submit">Отправить</button>
     </form>
     <script>
+        const openFileMenuButton = document.getElementById("openFileMenuButton");
+        const fileMenu = document.getElementById("fileMenu");
+    
+        openFileMenuButton.addEventListener("click", () => {
+            fileMenu.style.display = fileMenu.style.display === "none" ? "block" : "none";
+        });
+    
         const form = document.getElementById("bugReportForm");
     
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
     
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
+            const bugReport = document.getElementById("bugReport").value;
+            const fileName = document.getElementById("fileName").value;
+            const fileInfo = document.getElementById("fileInfo").value;
+            const fileInput = document.getElementById("file");
     
-            const response = await fetch('/send_bug_report', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+            const formData = new FormData();
+            formData.append("bugReport", bugReport);
+            formData.append("fileName", fileName);
+            formData.append("fileInfo", fileInfo);
+            formData.append("file", fileInput.files[0]);
     
-            if (response.ok) {
+            try {
+                const response = await fetch("/send_bug_report", {
+                    method: "POST",
+                    body: formData,
+                });
+    
+                if (!response.ok) {
+                    throw new Error("Ошибка при загрузке файла.");
+                }
+    
+                const data = await response.json();
+    
                 alert("The Bug Report has been sent successfully!");
-            } else {
-                alert("The Bug Report has not been sent.");
+    
+                fileMenu.style.display = "none";
+            } catch (error) {
+                alert(error.message);
             }
         });
-    </script>
+    </script>    
 </body>
 </html>

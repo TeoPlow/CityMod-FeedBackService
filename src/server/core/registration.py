@@ -1,21 +1,27 @@
 from config import logger_config
-from server.database.db_connection import get_db
-from server.database.db_create import User
-from flask import make_response
+from server.database.tables import User
+from flask import make_response, Response
+from http import HTTPStatus
+from typing import Any
 
 import logging
 import logging.config
-import jwt
-import datetime
 
 
 logger = logging.getLogger('server')
 logging.config.dictConfig(logger_config)
 
 
-def user_register(data):
-    db = next(get_db())
+def user_register(data: dict[str, Any]) -> Response:
+    """
+    Выполняет регистрацию пользователя, добавляя его данные в БД.
+        Параметры:
+            data: Словарь в формате response.json с инфой
+                  о name, email и password.
 
+        Возвращает:
+            Ответ от сервера: {message, code}
+    """
     name = data.get('name')
     logger.info(f"Получил на вход name: {name}")
     
@@ -25,21 +31,20 @@ def user_register(data):
     password = data.get('password')
     logger.info(f"Получил на вход password: {password}")
 
-    if db.query(User).filter(User.email == email).first():
-        response = make_response({'error': 'Email already registered'}, 400)
+    if User.check_user_existence(email):
+        response = make_response({'error': 'Email already registered'}, HTTPStatus.CONFLICT)
         return response
 
-    if db.query(User).filter(User.name == name).first():
-        response = make_response({'error': 'Username already registered'}, 400)
+    if User.check_user_existence(name):
+        response = make_response({'error': 'Username already registered'}, HTTPStatus.CONFLICT)
         return response
 
-    new_user = User(name=name, email=email)
-    new_user.set_password(password)
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    logger.info("Пользователь зарегестрирован")
-
-    response = make_response({'message': 'User registered successfully'}, 201)
-    return response
+    try:
+        user_id = User.create(name, email, password)
+        logger.info(f"Пользователь c id: {user_id} зарегистрирован")
+        return make_response({'message': 'User registered successfully'}, HTTPStatus.CREATED)
+    except Exception as e:
+        logger.error(f"Не удалось создать нового пользователя!")
+        return make_response({'message': 'User not registered...'}, HTTPStatus.BAD_REQUEST)
+    
 

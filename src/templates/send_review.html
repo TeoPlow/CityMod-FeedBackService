@@ -45,9 +45,10 @@
     <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
 
     <form id="reviewForm" class="inputform">
-        <input type="text" name="review" placeholder="Your Review" required>
+        <h1>Leave your review</h1>
+        <textarea name="review" placeholder="..." maxlength="1024" required></textarea>
         <button type="submit">Отправить</button>
-    </form>
+    </form>    
     <script>
         const form = document.getElementById("reviewForm");
     

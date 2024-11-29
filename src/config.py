@@ -3,8 +3,10 @@ import sys
 
 root_dir = os.path.dirname(os.path.abspath(__file__))
 
-DATABASE_URL = "postgresql+psycopg2://postgres@127.0.0.1:5432/citymod_feedback"
+DATABASE_URL = "postgresql://postgres@127.0.0.1:5432/citymod_feedback"
 
+FILEBASE_PATH = "/home/teoblow/Programs/CityMod-FeedBackService/filebase"
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 logger_config = {
     "version": 1,

@@ -19,7 +19,7 @@ let isDay = getCookie("theme") === "day";
 if (isDay) {
     orbImage.src = "static/images/sun.png";
     backgroundSky.src = "static/images/sky.png";
-    backgroundGrayCity.src = "static/images/gray_city.png"
+    backgroundGrayCity.src = "static/images/gray_city.png";
 } else {
     orbImage.src = "static/images/moon.png";
     backgroundSky.src = "static/images/night_sky.png";

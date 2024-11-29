@@ -1,44 +1,52 @@
 from config import logger_config
-from server.database.db_connection import get_db
-from server.database.db_create import User
+from server.database.tables import User
 from server.handlers.get_user_id import get_user_id
 from functools import wraps
-from flask import request, redirect, url_for, jsonify, make_response
+from flask import request, make_response, Response, redirect, url_for
+from http import HTTPStatus
 from dotenv import load_dotenv
-
-import logging
-import logging.config
+from typing import Any
 import jwt
 import datetime
 import os
+
+import logging
+import logging.config
 
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-logger = logging.getLogger('server')
+log = logging.getLogger('server')
 logging.config.dictConfig(logger_config)
 
-def user_login(data):
-    db = next(get_db())
 
+def user_login(data: dict[str, Any]) -> Response:
+    """
+    Выполняет авторизацию пользователя,
+    проверяя наличие вводимых данных в БД
+    и устанавливая токен в куке для сохранения авторизации.
+        Параметры:
+            data: Словарь в формате response.json с инфой
+                  о email_or_name, password и remember_me.
+
+        Возвращает:
+            Ответ от сервера : {message, code}
+    """
     email_or_name = data.get('email_or_name')
-    logger.info(f"Получил на вход email or name: {email_or_name}")
+    log.debug(f"Получил на вход email or name: {email_or_name}")
 
     password = data.get('password')
-    logger.info(f"Получил на вход password: {password}")
+    log.debug(f"Получил на вход password: {password}")
 
     remember_me = data.get('remember_me', False)
-    logger.info(f"Запоминалка: {remember_me}")
+    log.debug(f"Запоминалка: {remember_me}")
 
-    user = db.query(User).filter(User.email == email_or_name).first()
-    if not user:
-        user = db.query(User).filter(User.name == email_or_name).first()
+    user_id = User.check_user_existence(email_or_name)
 
-    if not user or not user.check_password(password):
-        logger.warning(f"Пользователя нет в БД!")
-        response = make_response({'error': 'Invalid email, name or password'}, 401)
-        return response
+    if not user_id or not User.check_password(user_id, password):
+        log.warning(f"Пользователя нет в БД!")
+        return make_response({'error': 'Invalid email, name or password'}, HTTPStatus.NOT_FOUND)
 
     # Устанавливаем срок действия токена
     expiration = datetime.timedelta(days=30 if remember_me else 1)
@@ -48,7 +56,7 @@ def user_login(data):
     }, SECRET_KEY, algorithm='HS256')
 
     # Создаем ответ с токеном в куке
-    response = make_response({'token': token}, 200)
+    response = make_response({'token': token}, HTTPStatus.OK)
     response.set_cookie(
         'auth_token', token, 
         httponly=True, 
@@ -62,6 +70,9 @@ def user_login(data):
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        request.user_id = get_user_id()
+        try:
+            request.user_id = get_user_id()
+        except:
+            return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function

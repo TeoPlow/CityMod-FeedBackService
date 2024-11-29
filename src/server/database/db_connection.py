@@ -1,23 +1,54 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from config import DATABASE_URL, logger_config
+from psycopg2.extras import RealDictCursor
+import psycopg2
+from typing import List, Union, Optional, Tuple
+
 import logging
 import logging.config
 
 
-logger = logging.getLogger('server')
+log = logging.getLogger('server')
 logging.config.dictConfig(logger_config)
 
-engine = create_engine(DATABASE_URL)
-logger.info(f"Создал движок по адресу: {DATABASE_URL}")
 
-Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-session = Session()
+def execute_query(query: str, params: Optional[Tuple[str, ...]] = None, fetch: bool = False) -> List[dict]:
+    """
+    Выполняет SQL-запрос и возвращает результат как список словарей.
+        Параметры:
+            query: SQL код для запроса к БД
+            params: Параметры для использования в запросе
+            fetch: Получить ли ответ от базы данных?
 
-def get_db():
-    logger.info(f"Запрос к БД")
-    db = Session()
+        Возвращает:
+            Ответ от базы данных
+    """
+    log.info("Работаю с БД")
     try:
-        yield db
+        conn = psycopg2.connect(DATABASE_URL)
+        log.debug("Подключился к БД")
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        log.debug("Создал курсор")
+
+        cursor.execute(query, params)
+        log.debug("Получил инфу из БД")
+
+        if fetch:
+            result = cursor.fetchall()
+        else:
+            log.warning("НЕТ ответа от БД")
+            result = None
+
+        conn.commit()
+        return result
+
+    except psycopg2.Error as e:
+        log.error(f"Ошибка в БД: {e}")
+        conn.rollback()
     finally:
-        db.close()
+        if cursor:
+            log.debug("Выключаю курсор")
+            cursor.close()
+        if conn:
+            log.debug("Отключаю соединение")
+            conn.close()
+
