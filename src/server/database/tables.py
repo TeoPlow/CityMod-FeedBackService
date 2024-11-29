@@ -44,13 +44,13 @@ class User:
         """
         log.debug("Проверяю пароль пользователя")
         query = "SELECT password_hash FROM users WHERE id = %s;"
-        result = execute_query(query, (user_id), fetch=True)
+        result = execute_query(query, (user_id,), fetch=True)
         if not result:
             return False
         return check_password_hash(result[0]['password_hash'], password)
 
     @staticmethod
-    def check_user_existence(email_or_name: str) -> Optional[int]:
+    def check_user_existence(email_or_name):
         """
         Проверяет, существует ли пользователь с такой почтой или именем в БД.
             Параметры:
@@ -61,23 +61,23 @@ class User:
         """
         log.debug("Проверяю существование пользователя по почте или имени")
         query = "SELECT id FROM users WHERE email = %s OR name = %s;"
-        result = execute_query(query, (email_or_name), fetch=True)
+        result = execute_query(query, (email_or_name, email_or_name), fetch=True)
         if result:
             return result
         else:
-            return None
+            return False
 
 
 
 class Review:
     @staticmethod
-    def create(user_id: int, review: str) -> int:
+    def create(user_id: int, message: str) -> int:
         log.debug("Добавляю отзыв")
         query = """
-        INSERT INTO reviews (user_id, review)
+        INSERT INTO reviews (user_id, message)
         VALUES (%s, %s) RETURNING id;
         """
-        return execute_query(query, (user_id, review), fetch=True)[0]['id']
+        return execute_query(query, (user_id, message), fetch=True)[0]['id']
 
 
 class BugReport:
@@ -93,13 +93,13 @@ class BugReport:
 
 class Offer:
     @staticmethod
-    def create(user_id, offer, files_id=None) -> int:
+    def create(user_id, message, files_id=None) -> int:
         log.debug("Добавляю предложение")
         query = """
-        INSERT INTO offers (user_id, offer, files_id)
+        INSERT INTO offers (user_id, message, files_id)
         VALUES (%s, %s, %s) RETURNING id;
         """
-        return execute_query(query, (user_id, offer), fetch=True)[0]['id']
+        return execute_query(query, (user_id, message), fetch=True)[0]['id']
 
 
 class File:
