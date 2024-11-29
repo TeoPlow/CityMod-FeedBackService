@@ -32,7 +32,7 @@ class User:
         return execute_query(query, (name, email, password_hash), fetch=True)[0]['id']
 
     @staticmethod
-    def check_password(user_id: str, password: str) -> bool:
+    def check_password(user_id: int, password: str) -> bool:
         """
         Проверяет, верен ли пароль пользователя, сравнивая хэши.
             Параметры:
@@ -42,12 +42,14 @@ class User:
             Возвращает:
                 Правильный ли пароль?
         """
-        log.debug("Проверяю пароль пользователя")
+        log.debug(f"Проверяю пароль пользователя c id: {user_id}")
         query = "SELECT password_hash FROM users WHERE id = %s;"
         result = execute_query(query, (user_id,), fetch=True)
         if not result:
+            log.warning("Пароля у этого пользователя НЕТ")
             return False
-        return check_password_hash(result[0]['password_hash'], password)
+        else:
+            return check_password_hash(result[0]['password_hash'], password)
 
     @staticmethod
     def check_user_existence(email_or_name):
@@ -63,43 +65,22 @@ class User:
         query = "SELECT id FROM users WHERE email = %s OR name = %s;"
         result = execute_query(query, (email_or_name, email_or_name), fetch=True)
         if result:
+            log.debug("Пользователь существует.")
             return result
         else:
+            log.debug("Пользователя НЕ существует")
             return False
 
 
-
-class Review:
+class Feedback:
     @staticmethod
-    def create(user_id: int, message: str) -> int:
-        log.debug("Добавляю отзыв")
+    def create(user_id: int, feedback_type: str, message: str, files_id: int) -> int:
+        log.debug("Добавляю feedback")
         query = """
-        INSERT INTO reviews (user_id, message)
-        VALUES (%s, %s) RETURNING id;
+        INSERT INTO feedback (user_id, type, message, files_id)
+        VALUES (%s, %s, %s, %s) RETURNING id;
         """
-        return execute_query(query, (user_id, message), fetch=True)[0]['id']
-
-
-class BugReport:
-    @staticmethod
-    def create(user_id: int, message: str, files_id: int = None) -> int:
-        log.debug("Добавляю баг репорт")
-        query = """
-        INSERT INTO bug_reports (user_id, message, files_id)
-        VALUES (%s, %s, %s) RETURNING id;
-        """
-        return execute_query(query, (user_id, message, files_id), fetch=True)[0]['id']
-
-
-class Offer:
-    @staticmethod
-    def create(user_id, message, files_id=None) -> int:
-        log.debug("Добавляю предложение")
-        query = """
-        INSERT INTO offers (user_id, message, files_id)
-        VALUES (%s, %s, %s) RETURNING id;
-        """
-        return execute_query(query, (user_id, message), fetch=True)[0]['id']
+        return execute_query(query, (user_id, feedback_type, message, files_id), fetch=True)[0]['id']
 
 
 class File:

@@ -2,14 +2,15 @@ import os
 from server.database.tables import Mod
 from server.core.registration import user_register
 from server.core.login import user_login, login_required
-from server.handlers.sends import send_review_handler, send_bug_report_handler, send_offer_handler
+from server.handlers.sends import send_feedback_handler
 from server.handlers.upload_file import upload_file_handler
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 from config import root_dir, logger_config
 
 import logging
 import logging.config
+from http import HTTPStatus
 
 
 log = logging.getLogger('app')
@@ -24,42 +25,41 @@ def home():
     return render_template("home.html")
 
 
-@app.route('/send_review', methods=['GET', 'POST'])
+@app.route('/send_review', methods=['GET'])
 @login_required
 def send_review():
-    if request.method == 'POST':
-        log.info("Отправка отзыва")
-        data = request.json
-        return send_review_handler(data)
-
-    elif request.method == 'GET':
-        return render_template("send_review.html")
+    return render_template("send_review.html")
 
 
-@app.route('/send_bug_report', methods=['GET', 'POST'])
+@app.route('/send_bug_report', methods=['GET'])
 @login_required
 def send_bug_report():
-    if request.method == 'POST':
-        log.info("Отправляю запрос на добавление файла")
-        file_id = upload_file_handler(request)
-
-        log.info("Отправка баг репорта")
-        return send_bug_report_handler(request, file_id)
-
-    elif request.method == 'GET':
-        return render_template("send_bug_report.html")
+    return render_template("send_bug_report.html")
 
 
-@app.route('/send_offer', methods=['GET', 'POST'])
+@app.route('/send_offer', methods=['GET'])
 @login_required
 def send_offer():
-    if request.method == 'POST':
-        log.info("Отправка предложения")
-        data = request.json
-        return send_offer_handler(data)
+    return render_template("send_offer.html")
 
-    elif request.method == 'GET':
-        return render_template("send_offer.html")
+
+@app.route('/send_feedback', methods=['POST'])
+def send_feedback():
+    try:
+        uploaded_file = request.files.get("file")
+        log.debug(f"Получил uploaded_file = {uploaded_file}")
+        if uploaded_file:
+            log.info("Отправляю запрос на добавление файла")
+            file_id = upload_file_handler(request)
+        else: 
+            file_id = None
+        
+        response = send_feedback_handler(request, file_id)
+        log.info("Отправляю фидбэк на сервер")
+        return response 
+    except Exception as e:
+        log.error(f"Ошибка: {e}")
+        return make_response({'message': f"{e}"}, HTTPStatus.BAD_REQUEST)
 
 
 @app.route('/mods', methods=['GET'])
@@ -79,26 +79,34 @@ def other_content():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        log.info("Отправляю запрос на регистрацию")
-        data = request.json
-        return user_register(data)
+    try:
+        if request.method == 'POST':
+            log.info("Отправляю запрос на регистрацию")
+            data = request.json
+            return user_register(data)
 
-    elif request.method == 'GET':
-        return render_template("register.html")
+        elif request.method == 'GET':
+            return render_template("register.html")
+    except Exception as e:
+        log.error(f"Ошибка: {e}")
+        return make_response({'message': f"{e}"}, HTTPStatus.BAD_REQUEST)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        log.info("Отправляю запрос на логирование")
-        data = request.json
-        return user_login(data)
+    try:
+        if request.method == 'POST':
+            log.info("Отправляю запрос на логирование")
+            data = request.json
+            return user_login(data)
 
-    elif request.method == 'GET':
-        return render_template("login.html")
+        elif request.method == 'GET':
+            return render_template("login.html")
+    except Exception as e:
+        log.error(f"Ошибка: {e}")
+        return make_response({'message': f"{e}"}, HTTPStatus.BAD_REQUEST)
     
 
 if __name__ == "__main__":
     app.config["WTF_CSRF_ENABLED"] = False
-    app.run()
+    app.run(debug=True)

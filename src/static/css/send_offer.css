@@ -1,0 +1,48 @@
+.inputform h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.inputform textarea {
+    width: 100%; /* Ширина на всю форму */
+    height: 250px; /* Высота поля */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 15px; /* Отступ между элементами */
+    border: 1px solid #ccc; /* Граница полей ввода */
+    border-radius: 6px;
+    font-size: 16px; /* Размер шрифта */
+    resize: vertical; /* Разрешить изменение размера только по вертикали */
+    scrollbar-width: none; /* Для Firefox */
+    box-sizing: border-box; /* Учитывать отступы в размерах */
+}
+
+.inputform textarea::-webkit-scrollbar {
+    display: none; /* Для Chrome, Safari и других браузеров на базе Webkit */
+}
+/* Дополнительные стили для элементов внутри формы */
+.inputform input {
+    width: 100%; /* Ширина на всю форму */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 15px; /* Отступ между элементами */
+    border: 1px solid #ccc; /* Граница полей ввода */
+    border-radius: 6px;
+    font-size: 16px; /* Размер шрифта */
+}
+
+.inputform button {
+    width: 100%; /* Кнопка на всю ширину формы */
+    padding: 10px; /* Внутренние отступы */
+    background-color: #0066cc; /* Зеленый цвет кнопки */
+    margin-bottom: 15px;
+    color: white; /* Белый текст */
+    border: none; /* Без границ */
+    border-radius: 6px;
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+}
+
+.inputform button:hover {
+    background-color: #0055a9; /* Темнее при наведении */
+}

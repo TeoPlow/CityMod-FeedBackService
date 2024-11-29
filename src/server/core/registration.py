@@ -44,7 +44,7 @@ def user_register(data: dict[str, Any]) -> Response:
         log.info(f"Пользователь c id: {user_id} зарегистрирован")
         return make_response({'message': 'User registered successfully'}, HTTPStatus.CREATED)
     except Exception as e:
-        log.error(f"Не удалось создать нового пользователя!")
-        return make_response({'message': 'User not registered...'}, HTTPStatus.BAD_REQUEST)
+        log.error(f"Не удалось создать нового пользователя! {e}")
+        return make_response({'message': f"User not registered... {e}"}, HTTPStatus.BAD_REQUEST)
     
 

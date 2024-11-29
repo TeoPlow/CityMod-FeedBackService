@@ -44,34 +44,16 @@
     <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
 
-    <form id="reviewForm" class="inputform">
+    <form id="feedbackForm" class="inputform" method="POST">
         <h1>Leave your review</h1>
-        <textarea name="review" placeholder="..." maxlength="1024" required></textarea>
+        <input type="hidden" name="feedbackType" id="feedbackType" value="review">
+        <textarea name="feedback" id="feedback" placeholder="..." maxlength="1024" required></textarea>     
+        <input type="hidden" id="openFileMenuButton">
+
+        {% include 'addons/file_upload_menu.html' %}
+    
         <button type="submit">Отправить</button>
-    </form>    
-    <script>
-        const form = document.getElementById("reviewForm");
-    
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-    
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
-    
-            const response = await fetch('/send_review', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-    
-            if (response.ok) {
-                alert("The review has been sent successfully!");
-            } else {
-                alert("The review has not been sent.");
-            }
-        });
-    </script>
+    </form>
+    <script src="{{ url_for('static', filename='js/feedback_send.js') }}"></script>
 </body>
 </html>

@@ -42,7 +42,8 @@ def user_login(data: dict[str, Any]) -> Response:
     remember_me = data.get('remember_me', False)
     log.debug(f"Запоминалка: {remember_me}")
 
-    user_id = User.check_user_existence(email_or_name)
+    user_id = User.check_user_existence(email_or_name)[0]['id']
+    log.debug(f"Получил user_id: {user_id}")
 
     if not user_id or not User.check_password(user_id, password):
         log.warning(f"Пользователя нет в БД!")
@@ -51,7 +52,7 @@ def user_login(data: dict[str, Any]) -> Response:
     # Устанавливаем срок действия токена
     expiration = datetime.timedelta(days=30 if remember_me else 1)
     token = jwt.encode({
-        'user_id': user.id,
+        'user_id': user_id,
         'exp': datetime.datetime.utcnow() + expiration
     }, SECRET_KEY, algorithm='HS256')
 

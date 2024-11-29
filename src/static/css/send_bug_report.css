@@ -35,6 +35,7 @@
     width: 100%; /* Кнопка на всю ширину формы */
     padding: 10px; /* Внутренние отступы */
     background-color: #0066cc; /* Зеленый цвет кнопки */
+    margin-bottom: 15px;
     color: white; /* Белый текст */
     border: none; /* Без границ */
     border-radius: 6px;

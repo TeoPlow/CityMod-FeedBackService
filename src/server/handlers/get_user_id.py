@@ -1,4 +1,4 @@
-from config import logger_config
+from config import logger_config, UnauthorizedError
 from flask import request
 from dotenv import load_dotenv
 import jwt
@@ -14,8 +14,6 @@ logging.config.dictConfig(logger_config)
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-class UnauthorizedError(Exception):
-    pass
 
 def get_user_id() -> int:
     """

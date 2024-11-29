@@ -37,17 +37,17 @@ function setCookie(name, value, days) {
 // Функция переключения темы
 toggleButton.addEventListener("click", () => {
     if (isDay) {
-        // Переключение на ночную тему
-        orbImage.src = "static/images/moon.png";
-        backgroundSky.src = "static/images/night_sky.png";
-        backgroundGrayCity.src = "static/images/gray_city_night.png"
-        setCookie("theme", "night", 365); // Сохраняем выбранную тему на 365 дней
-    } else {
         // Переключение на дневную тему
         orbImage.src = "static/images/sun.png";
         backgroundSky.src = "static/images/sky.png";
         backgroundGrayCity.src = "static/images/gray_city.png"
         setCookie("theme", "day", 365); // Сохраняем выбранную тему на 365 дней
+    } else {
+        // Переключение на ночную тему
+        orbImage.src = "static/images/moon.png";
+        backgroundSky.src = "static/images/night_sky.png";
+        backgroundGrayCity.src = "static/images/gray_city_night.png"
+        setCookie("theme", "night", 365); // Сохраняем выбранную тему на 365 дней
     }
     isDay = !isDay; // Переключаем состояние
 });
