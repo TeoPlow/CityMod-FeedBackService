@@ -30,6 +30,7 @@ CREATE TABLE mods (
     version TEXT NOT NULL,
     game_versions TEXT NOT NULL,
     changelog TEXT,
+    images_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     files_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -38,6 +39,7 @@ CREATE TABLE other_content (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     info TEXT,
+    images_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     files_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -46,6 +48,7 @@ CREATE TABLE maps (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     changelog TEXT,
+    images_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     files_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
