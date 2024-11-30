@@ -3,6 +3,7 @@ const toggleButton = document.getElementById("toggleThemeButton");
 const backgroundSky = document.getElementById("backgroundSky");
 const backgroundGrayCity = document.getElementById("backgroundGrayCity");
 const orbImage = document.querySelector(".orb img");
+const body = document.body;
 
 // Функция для получения значения cookie по имени
 function getCookie(name) {
@@ -20,10 +21,12 @@ if (isDay) {
     orbImage.src = "static/images/sun.png";
     backgroundSky.src = "static/images/sky.png";
     backgroundGrayCity.src = "static/images/gray_city.png";
+    body.classList.remove("night-theme");
 } else {
     orbImage.src = "static/images/moon.png";
     backgroundSky.src = "static/images/night_sky.png";
     backgroundGrayCity.src = "static/images/gray_city_night.png"
+    body.classList.add("night-theme");
 }
 
 // Функция для установки cookie
@@ -41,12 +44,14 @@ toggleButton.addEventListener("click", () => {
         orbImage.src = "static/images/sun.png";
         backgroundSky.src = "static/images/sky.png";
         backgroundGrayCity.src = "static/images/gray_city.png"
+        body.classList.remove("night-theme");
         setCookie("theme", "day", 365); // Сохраняем выбранную тему на 365 дней
     } else {
         // Переключение на ночную тему
         orbImage.src = "static/images/moon.png";
         backgroundSky.src = "static/images/night_sky.png";
         backgroundGrayCity.src = "static/images/gray_city_night.png"
+        body.classList.add("night-theme");
         setCookie("theme", "night", 365); // Сохраняем выбранную тему на 365 дней
     }
     isDay = !isDay; // Переключаем состояние
