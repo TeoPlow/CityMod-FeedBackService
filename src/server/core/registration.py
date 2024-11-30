@@ -23,18 +23,20 @@ def user_register(data: dict[str, Any]) -> Response:
             Ответ от сервера: {message, code}
     """
     name = data.get('name')
-    log.info(f"Получил на вход name: {name}")
+    log.debug(f"Получил на вход name: {name}")
     
     email = data.get('email')
-    log.info(f"Получил на вход email: {email}")
+    log.debug(f"Получил на вход email: {email}")
 
     password = data.get('password')
-    log.info(f"Получил на вход password: {password}")
+    log.debug(f"Получил на вход password: {password}")
 
+    log.debug(f"Проверяю, сущетсвует ли email: {email} в БД")
     if User.check_user_existence(email):
         response = make_response({'error': 'Email already registered'}, HTTPStatus.CONFLICT)
         return response
 
+    log.debug(f"Проверяю, сущетсвует ли имя: {name} в БД")
     if User.check_user_existence(name):
         response = make_response({'error': 'Username already registered'}, HTTPStatus.CONFLICT)
         return response

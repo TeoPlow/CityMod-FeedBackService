@@ -30,13 +30,13 @@ def execute_query(query: str, params: Optional[Tuple[str, ...]] = None, fetch: b
         log.debug("Создал курсор")
 
         cursor.execute(query, params)
-        log.debug("Получил инфу из БД")
 
         if fetch:
             result = cursor.fetchall()
+            log.debug(f"Получил ответ от БД: {result}")
         else:
-            log.warning("НЕТ ответа от БД")
             result = None
+            log.debug("Ответа от БД нет: fetch = false")
 
         conn.commit()
         return result

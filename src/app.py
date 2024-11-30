@@ -4,6 +4,8 @@ from server.core.registration import user_register
 from server.core.login import user_login, login_required
 from server.handlers.sends import send_feedback_handler
 from server.handlers.upload_file import upload_file_handler
+from server.handlers.get_mods import get_mods_handler
+from server.handlers.get_maps import get_maps_handler
 
 from flask import Flask, render_template, request, make_response
 from config import root_dir, logger_config
@@ -11,6 +13,7 @@ from config import root_dir, logger_config
 import logging
 import logging.config
 from http import HTTPStatus
+from datetime import datetime
 
 
 log = logging.getLogger('app')
@@ -64,12 +67,18 @@ def send_feedback():
 
 @app.route('/mods', methods=['GET'])
 def mods():
-    return render_template('mods.html', mods=Mod.get_mods())
+    log.info("Вывожу список модов")
+    mods_list = get_mods_handler()
+
+    return render_template('mods.html', mods=mods_list)
 
 
 @app.route('/maps', methods=['GET'])
 def maps():
-    return render_template("maps.html")
+    log.info("Вывожу список модов")
+    maps_list = get_maps_handler()
+
+    return render_template("maps.html", maps=maps_list)
 
 
 @app.route('/other_content', methods=['GET'])
