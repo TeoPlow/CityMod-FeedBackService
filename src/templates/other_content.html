@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="manifest" href="{{ url_for('static', filename='images/favicon/site.webmanifest') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CityMod – Other Content</title>
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/other_content.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/other_content.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}">
 </head>
 <body>
@@ -41,7 +42,43 @@
         <img src="static/images/gray_city.png" alt="gray_city" id="backgroundGrayCity" class="background-layer ">
         <img src="static/images/black_city.png" alt="black_city" class="background-layer">
     </div>
+
+    <!-- Список другого контента из БД -->
+    <div class="other_contents-container">
+        <h1>Available Other Content</h1>
+        {% for other_content in other_contents %}
+        <div class="other_content-card">
+            <h2>{{ other_content.name }}</h2>
+
+            <img src="{{ url_for('static', filename=other_content.images_path) }}" alt="other_content Image">
+            <a href="{{ url_for('static', filename=other_content.files_path) }}" download>Download Other Content</a>
+
+            <button class="toggle-changelog" onclick="toggleChangelog({{ loop.index }})">
+                Show Change Log
+            </button>
+            <div id="changelog-{{ loop.index }}" class="changelog" style="display: none;">
+                <p>{{ other_content.changelog }}</p>
+            </div>
+
+            <p><strong>Release Date: </strong> {{ other_content.time }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    
     <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
+    <script>
+        function toggleChangelog(index) {
+            const changelog = document.getElementById(`changelog-${index}`);
+            const button = document.querySelector(`.toggle-changelog[onclick='toggleChangelog(${index})']`);
+            if (changelog.style.display === "none") {
+                changelog.style.display = "block";
+                button.textContent = "Hide Change Log";
+            } else {
+                changelog.style.display = "none";
+                button.textContent = "Show Change Log";
+            }
+        }
+    </script>
 </body>
 </html>
