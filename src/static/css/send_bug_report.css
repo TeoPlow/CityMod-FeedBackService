@@ -5,6 +5,10 @@
     color: #000000;
 }
 
+body.night-theme .inputform h1 {
+    color: #ececec;
+}
+
 .inputform textarea {
     width: 100%; /* Ширина на всю форму */
     height: 250px; /* Высота поля */
@@ -16,6 +20,12 @@
     resize: vertical; /* Разрешить изменение размера только по вертикали */
     scrollbar-width: none; /* Для Firefox */
     box-sizing: border-box; /* Учитывать отступы в размерах */
+}
+
+body.night-theme .inputform textarea {
+    background-color: #101010;
+    color: #ffffff;
+    border: 1px solid #3b3b3b;
 }
 
 .inputform textarea::-webkit-scrollbar {

@@ -23,6 +23,19 @@ body {
     z-index: 10;
 }
 
+button {
+    font-family: inherit; /* Наследует шрифт от родительского элемента */
+    font-size: inherit;  /* Наследует размер шрифта */
+    color: inherit;      /* Наследует цвет текста */
+    background-color: transparent; /* Убирает стандартный фон */
+    border: none;        /* Убирает границы */
+    cursor: pointer;     /* Устанавливает курсор в виде указателя */
+}
+
+button:focus {
+    outline: none; /* Убирает обводку при фокусе */
+}
+
 /* Навигационная панель */
 .navbar {
     position: absolute;
@@ -169,19 +182,29 @@ body {
     z-index: 5; /* Уровень слоя */
 }
 
-.file-upload-menu {
-    display: none;
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin-top: 10px;
-    border-radius: 5px;
-    width: 300px;
-    background: #f9f9f9;
+body.night-theme .inputform {
+    background-color: #282828b9; /* Полупрозрачный черный фон */
+    color: white; /* Белый текст */
 }
+
+.file-upload-menu label {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+body.night-theme .file-upload-menu label {
+    color: #ffffff;
+}
+
 .file-upload-menu input,
 .file-upload-menu textarea,
 .file-upload-menu button {
     margin-bottom: 10px;
     width: 100%;
     padding: 8px;
+}
+
+body.night-theme .file-upload-menu textarea {
+    color: #202020;
 }

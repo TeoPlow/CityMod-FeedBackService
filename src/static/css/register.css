@@ -18,6 +18,10 @@
     color: #000000;
 }
 
+body.night-theme .inputform h1 {
+    color: #ececec;
+}
+
 .inputform textarea {
     width: 100%; /* Ширина на всю форму */
     height: 250px; /* Высота поля */
@@ -31,6 +35,12 @@
     box-sizing: border-box; /* Учитывать отступы в размерах */
 }
 
+body.night-theme .inputform textarea {
+    background-color: #101010;
+    color: #ffffff;
+    border: 1px solid #3b3b3b;
+}
+
 /* Дополнительные стили для элементов внутри формы */
 .inputform input {
     width: 100%; /* Ширина на всю форму */
@@ -39,6 +49,12 @@
     border: 1px solid #ccc; /* Граница полей ввода */
     border-radius: 6px;
     font-size: 16px; /* Размер шрифта */
+}
+
+body.night-theme .inputform input {
+    background-color: #101010;
+    color: #ffffff;
+    border: 1px solid #3b3b3b;
 }
 
 .inputform button {
@@ -59,6 +75,10 @@
 .inputform label {
     font-size: 16px;
     color: #000000;
+}
+
+body.night-theme .inputform label {
+    color: #e6e6e6;
 }
 
 .inputform nav {
