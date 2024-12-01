@@ -1,0 +1,141 @@
+.add-content-container {
+    max-width: 800px;
+    max-height: 800px;
+    position: relative;
+    top: 120px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff98;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Для Firefox */
+    z-index: 4;
+}
+
+body.night-theme .add-content-container {
+    background-color: #282828b9;
+}
+
+.add-content-container::-webkit-scrollbar {
+    display: none; /* Для Chrome, Safari и других браузеров на базе Webkit */
+}
+
+.add-content-container h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+body.night-theme .add-content-container h1 {
+    color: #ffffff;
+}
+
+/* Вкладки */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background: #f0f0f0;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #333;
+    transition: background 0.3s;
+}
+
+.tab-button:hover {
+    background: #ddd;
+}
+
+.tab-button.active {
+    background: #333;
+    color: #fff;
+}
+
+/* Содержимое вкладок */
+.tab-content {
+    display: none;
+}
+
+.tab-content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.tab-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.tab-content form input,
+.tab-content form textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+body.night-theme .tab-content form input,
+body.night-theme .tab-content form textarea {
+    background-color: #1b1b1bb9;
+    color: #ffffff;
+}
+
+.tab-content form button {
+    padding: 10px;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.tab-content form button:hover {
+    background: #555;
+}
+
+.tab-content form label {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #000000;
+}
+
+body.night-theme .tab-content form label {
+    color: #ffffff;
+}
+
+.tab-content h2 {
+    color: #000000;
+}
+
+body.night-theme .tab-content h2 {
+    color: #ffffff;
+}
+
+.tab-content form select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+body.night-theme .tab-content form select {
+    background-color: #1b1b1bb9;
+    color: #ffffff;
+}
+
+.tab-content form input[type="file"] {
+    padding: 5px;
+}

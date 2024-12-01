@@ -183,8 +183,8 @@ button:focus {
 }
 
 body.night-theme .inputform {
-    background-color: #282828b9; /* Полупрозрачный черный фон */
-    color: white; /* Белый текст */
+    background-color: #282828b9;
+    color: white;
 }
 
 .file-upload-menu label {
@@ -206,5 +206,11 @@ body.night-theme .file-upload-menu label {
 }
 
 body.night-theme .file-upload-menu textarea {
-    color: #202020;
+    color: #ffffff;
+}
+
+body.night-theme .file-upload-menu input {
+    background-color: #101010;
+    color: #ffffff;
+    border: 1px solid #3b3b3b;
 }
