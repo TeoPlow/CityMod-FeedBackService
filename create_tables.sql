@@ -55,7 +55,7 @@ CREATE TABLE maps (
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE objects_in_mod (
+CREATE TABLE mod_elements (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     type TEXT NOT NULL,
@@ -64,8 +64,8 @@ CREATE TABLE objects_in_mod (
     path TEXT NOT NULL,
     info TEXT NOT NULL,
     version_added TEXT,
-    image_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
-    model_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
+    images_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
+    files_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
