@@ -81,7 +81,8 @@
                 localStorage.setItem("token", result.token);
                 alert("Login successful!");
             } else {
-                alert("Login failed");
+                const errorData = await response.json();
+                alert(`Login failed: ${errorData.error}`);
             }
         });
     </script>

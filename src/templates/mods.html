@@ -52,7 +52,7 @@
             <h3>{{ mod.game_versions }}</h3>
 
             <img src="{{ url_for('static', filename=mod.images_path) }}" alt="Mod Image">
-            <a href="{{ url_for('static', filename=mod.files_path) }}" download>Download File</a>
+            <a href="{{ url_for('static', filename=mod.files_path) }}" download>Download</a>
 
             <button class="toggle-changelog" onclick="toggleChangelog({{ loop.index }})">
                 Show Change Log

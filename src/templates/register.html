@@ -76,7 +76,8 @@
             if (response.ok) {
                 alert("Register successful!");
             } else {
-                alert("Register failed");
+                const errorData = await response.json();
+                alert(`Register failed: ${errorData.error}`);
             }
         });
     </script>
