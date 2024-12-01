@@ -28,12 +28,13 @@ def get_file_type(filename: str) -> Optional[str]:
     else:
         return None
 
-def upload_file_handler(request, file_key: str) -> int:
+def upload_file_handler(request, file_key: str, relative_path: str = '') -> int:
     """
     Загружает файл на сервер и в БД
         Параметры:
-            request: Имя пользователя
+            request: Запрос
             file_key (str): Ключ, по которому передаётся файл внутри request.files
+            relative_path (str): относительный путь между внутри папки /filebase/, в котором будет лежать добавленный файл.
 
         Возвращает:
             int: ID загруженного файла 
@@ -54,9 +55,12 @@ def upload_file_handler(request, file_key: str) -> int:
     file_type = get_file_type(file.filename)
 
     if file and file_type != None:
-        file_path = os.path.join(FILEBASE_PATH, file.filename)
+        file_path = os.path.join(FILEBASE_PATH, relative_path, file.filename)
+        
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
         file.save(file_path)
-        file_path_relative = os.path.join('filebase', file.filename)
+
+        file_path_relative = os.path.join('filebase', relative_path, file.filename)
         log.debug(f"Файл сохранён на сервере по пути: {file_path_relative}")
 
         file_id = File.create(file_type, file_name, file_info, file_path_relative)

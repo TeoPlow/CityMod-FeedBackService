@@ -34,8 +34,9 @@
         <h1>Add Content</h1>
         <!-- Вкладки -->
         <div class="tabs">
-            <button class="tab-button active" data-tab="add-mod">Add Mod</button>
+            <button class="tab-button" data-tab="add-mod">Add Mod</button>
             <button class="tab-button" data-tab="add-map">Add Map</button>
+            <button class="tab-button" data-tab="add-mod-elements">Add Mod Elements</button>
             <button class="tab-button" data-tab="add-other">Add Other Content</button>
         </div>
     
@@ -48,7 +49,7 @@
                 <input type="text" id="mod-name" name="mod-name" required>
     
                 <label for="release-channel">Release Channel:</label>
-                <select id="release-channel" name="release-channel">
+                <select id="release-channel" name="release-channel" required>
                     <option value="Release">Release</option>
                     <option value="Beta">Beta</option>
                     <option value="Alpha">Alpha</option>
@@ -104,6 +105,56 @@
                 <button type="submit">Submit Map</button>
             </form>
         </div>
+
+        <div class="tab-content" id="add-mod-elements" style="display: none;">
+            <form enctype="multipart/form-data">
+                <input type="hidden" name="content-type" value="mod-elements-content">
+
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+    
+                <label for="type">Type:</label>
+                <select id="type" name="type" required>
+                    <option value="Block:Building">Block:Building</option>
+                    <option value="Block:Road">Block:Road</option>
+                    <option value="Block:Other">Block:Other</option>
+                    <option value="Block:Plant">Block:Plant</option>
+                    <option value="Item">Item</option>
+                    <option value="Function">Function</option>
+                    <option value="Language">Language</option>
+                </select>
+    
+                <label for="status">Status:</label>
+                <select id="status" name="status" required>
+                    <option value="Available">Available</option>
+                    <option value="Deleted">Deleted</option>
+                    <option value="In development">In development</option>
+                </select>
+    
+                <label for="mod_id">Mod ID:</label>
+                <textarea id="mod_id" name="mod_id" required></textarea>
+    
+                <label for="path">Path:</label>
+                <input type="text" id="path" name="path" required>
+    
+                <label for="info">Info:</label>
+                <input type="text" id="info" name="info" required>
+
+                <label for="version_added">Game version that was added to:</label>
+                <input type="text" id="version_added" name="version_added" required>
+
+                <label for="file_id">Model:</label>
+                <input type="file" id="file" name="file" required>
+
+                <label for="image_id">Image:</label>
+                <input type="file" id="image" name="image" required>
+
+                <!-- Заплатка для имени файла -->
+                <input type="hidden" id="fileName" name="fileName" value="name">
+    
+                <button type="submit">Submit Element</button>
+            </form>
+        </div>
     
         <div class="tab-content" id="add-other" style="display: none;">
             <form enctype="multipart/form-data">
@@ -128,8 +179,6 @@
             </form>
         </div>
     </div>
-    
-    
 
     <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
@@ -187,6 +236,13 @@
             addMapForm.addEventListener("submit", (event) => {
                 event.preventDefault();
                 sendFormData(addMapForm);
+            });
+
+            // Обработка формы Mod Elements
+            const addModElementsForm = document.querySelector("#add-mod-elements form");
+            addModElementsForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                sendFormData(addModElementsForm);
             });
 
             // Обработка формы Add Other Content

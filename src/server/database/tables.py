@@ -226,6 +226,74 @@ class Map:
         return execute_query(query, fetch=True)
 
 
+class ModElements:
+    @staticmethod
+    def create(name: str, element_type: str, status: str, mod_id: str, path: str, info: str, version_added: str, images_id: int, files_id: int) -> int:
+        """
+        Добавляет элемент мода в БД.
+            Параметры:
+                name (str): Название элемента
+                element_type (str): Тип элемента
+                status (str): Статус разработки
+                mod_id (str): ID мода
+                path (str): Путь до файла
+                info (str): Описание карты
+                version_added (str): Версия игры, в которой добавили элемент
+                files_id (int): ID связанного файла
+                images_id (int): ID связанного изображения
+            Возвращает:
+                int: ID созданного элемента
+        """
+        log.debug("Добавляю элемент мода")
+        query = """
+        INSERT INTO mod_elements (name, type, status, mod_id, path, info, version_added, images_id, files_id)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;
+        """
+        return execute_query(query, (name, element_type, status, mod_id, path, info, version_added, images_id, files_id), fetch=True)[0]['id']
+
+    @staticmethod
+    def get_mod_elements(name: str, element_type: str, status: str, version_added: str) -> List[dict]:
+        """
+        Получает список всех элементов мода из БД, с учётом входных переменных для поиска.
+            Параметры:
+                name (str): Название элемента
+                element_type (str): Тип элемента
+                status (str): Статус разработки
+                version_added (str): Версия игры, в которой добавили элемент
+            Возвращает:
+                list: Список элементов мода.
+        """
+        log.debug("Получаю все элементы мода из БД")
+        
+        base_query = """
+        SELECT * FROM mod_elements
+        """
+
+        filters = []
+        params = []
+        
+        if name:
+            filters.append("name = %s")
+            params.append(name)
+        if element_type:
+            filters.append("element_type = %s")
+            params.append(element_type)
+        if status:
+            filters.append("status = %s")
+            params.append(status)
+        if version_added:
+            filters.append("version_added = %s")
+            params.append(version_added)
+        
+        if filters:
+            base_query += " WHERE " + " AND ".join(filters)
+        
+        base_query += " ORDER BY id desc;"
+        
+        log.debug(f"Создан запрос с учётом фильтров: {base_query}, параметры: {params}")
+        return execute_query(base_query, tuple(params), fetch=True)
+
+
 class OtherContent:
     @staticmethod
     def create(name: str, info: str, files_id: int, images_id: int) -> int:

@@ -7,6 +7,7 @@ from server.handlers.upload_file import upload_file_handler
 from server.handlers.get_mods import get_mods_handler
 from server.handlers.get_maps import get_maps_handler
 from server.handlers.get_other_content import get_other_content_handler
+from server.handlers.get_mod_elements import get_mod_elements_handler
 from server.handlers.add_content import add_content_handler
 
 from flask import Flask, render_template, request, make_response
@@ -83,6 +84,17 @@ def maps():
     return render_template("maps.html", maps=maps_list)
 
 
+@app.route('/mod_elements', methods=['GET'])
+def mod_elements():
+    log.info("Вывожу список другого контента")
+    name = ''
+    element_type = ''
+    status = ''
+    version_added = ''
+    mod_elements_list = get_mod_elements_handler(name, element_type, status, version_added)
+    return render_template("mod_elements.html", mod_elements=mod_elements_list)
+
+
 @app.route('/other_content', methods=['GET'])
 def other_content():
     log.info("Вывожу список другого контента")
@@ -134,12 +146,12 @@ def add_content():
         uploaded_file = request.files.get("file")
         log.debug(f"Получил uploaded_file = {uploaded_file}")
         log.info("Отправляю запрос на добавление файла")
-        file_id = upload_file_handler(request, 'file')
+        file_id = upload_file_handler(request, 'file', relative_path='downloaded')
 
         uploaded_image = request.files.get("image")
         log.debug(f"Получил uploaded_image = {uploaded_image}")
         log.info("Отправляю запрос на добавление изображения")
-        image_id = upload_file_handler(request, 'image')
+        image_id = upload_file_handler(request, 'image', relative_path='images')
         
         response = add_content_handler(request, file_id, image_id)
         log.info("Отправляю контент на сервер")

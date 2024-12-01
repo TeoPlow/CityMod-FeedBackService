@@ -11,15 +11,15 @@ root_dir = os.path.dirname(os.path.abspath(__file__))
 DATABASE_URL = "postgresql://postgres@127.0.0.1:5432/citymod_feedback"
 
 
-# Путь к базе с файлами
+# Путь к базе с файлами (обязательно кончается на filebase)
 FILEBASE_PATH = "/home/teoblow/Programs/CityMod-FeedBackService/src/static/filebase"
 
 
 # Поддерживаемые расширения
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'jar', 'zip', 'rar', 'pdn'}
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'jar', 'zip', 'rar', 'pdn', 'json'}
 
 
-# ID администраторов
+# ID пользователей, которые будут администраторами
 ADMINS_IDS = {2, }
 
 
@@ -50,7 +50,7 @@ logger_config = {
     "formatters": {
         "base": {
             "()": ColorFormatter,
-            "format": "%(levelname)s | %(name)s | %(filename)s | %(asctime)s | %(lineno)s | %(message)s",
+            "format": "%(levelname)s | %(name)s | %(asctime)s | %(filename)s:%(lineno)s | %(message)s",
             "datefmt": "%H:%M:%S"
         }
     },

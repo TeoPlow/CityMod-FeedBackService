@@ -1,5 +1,5 @@
 from config import logger_config, UnauthorizedError
-from server.database.tables import Mod, Map, OtherContent, File
+from server.database.tables import Mod, Map, ModElements, OtherContent, File
 from server.handlers.get_user_id import get_user_id
 from flask import url_for, make_response, Response
 from http import HTTPStatus
@@ -50,6 +50,18 @@ def add_content_handler(request, file_id: int, image_id: int) -> Response:
             log.debug(f"Обрабатываю карту: {name}, {game_version}, {mod_version}, {info}")
 
             content_id = Map.create(name, game_version, mod_version, info, file_id, image_id)
+
+        elif content_type == "mod-elements-content":
+            name = request.form.get('name')
+            element_type = request.form.get('type')
+            status = request.form.get('status')
+            mod_id = request.form.get('mod_id')
+            path = request.form.get('path')
+            info = request.form.get('info')
+            version_added = request.form.get('version_added')
+            log.debug(f"Обрабатываю элементы мода: {name}, {element_type}, {status}, {mod_id}, {path}, {info}, {version_added}")
+
+            content_id = ModElements.create(name, element_type, status, mod_id, path, info, version_added, image_id, file_id)
 
         elif content_type == "other-content":
             name = request.form.get('content-name')
