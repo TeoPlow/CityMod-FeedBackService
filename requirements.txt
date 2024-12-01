@@ -1,7 +1,8 @@
-psycopg2 # драйвер для PostgreSQL
+psycopg2-binary # драйвер для PostgreSQL
 
 flask # работа с сайтом
 python-dotenv # передача ключа
 PyJWT # хэширование паролей
 
 colorama # цветные логи
+email-validator # проверка почт
