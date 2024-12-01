@@ -1,11 +1,13 @@
 import os
 from server.database.tables import Mod
 from server.core.registration import user_register
-from server.core.login import user_login, login_required
+from server.core.login import user_login, login_required, admin_required
 from server.handlers.sends import send_feedback_handler
 from server.handlers.upload_file import upload_file_handler
 from server.handlers.get_mods import get_mods_handler
 from server.handlers.get_maps import get_maps_handler
+from server.handlers.get_other_content import get_other_content_handler
+from server.handlers.add_content import add_content_handler
 
 from flask import Flask, render_template, request, make_response
 from config import root_dir, logger_config
@@ -53,7 +55,7 @@ def send_feedback():
         log.debug(f"Получил uploaded_file = {uploaded_file}")
         if uploaded_file:
             log.info("Отправляю запрос на добавление файла")
-            file_id = upload_file_handler(request)
+            file_id = upload_file_handler(request, 'file')
         else: 
             file_id = None
         
@@ -83,7 +85,10 @@ def maps():
 
 @app.route('/other_content', methods=['GET'])
 def other_content():
-    return render_template("other_content.html")
+    log.info("Вывожу список другого контента")
+    other_content_list = get_other_content_handler()
+
+    return render_template("other_content.html", other_contents=other_content_list)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -98,7 +103,7 @@ def register():
             return render_template("register.html")
     except Exception as e:
         log.error(f"Ошибка: {e}")
-        return make_response({'message': f"{e}"}, HTTPStatus.BAD_REQUEST)
+        return make_response({'error': f"{e}"}, HTTPStatus.BAD_REQUEST)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -113,9 +118,37 @@ def login():
             return render_template("login.html")
     except Exception as e:
         log.error(f"Ошибка: {e}")
-        return make_response({'message': f"{e}"}, HTTPStatus.BAD_REQUEST)
+        return make_response({'error': f"{e}"}, HTTPStatus.BAD_REQUEST)
     
+
+@app.route('/admin', methods=['GET'])
+@admin_required
+def admin():
+    return render_template("admin.html")
+
+
+@app.route('/add_content', methods=['POST'])
+@admin_required
+def add_content():
+    try:
+        uploaded_file = request.files.get("file")
+        log.debug(f"Получил uploaded_file = {uploaded_file}")
+        log.info("Отправляю запрос на добавление файла")
+        file_id = upload_file_handler(request, 'file')
+
+        uploaded_image = request.files.get("image")
+        log.debug(f"Получил uploaded_image = {uploaded_image}")
+        log.info("Отправляю запрос на добавление изображения")
+        image_id = upload_file_handler(request, 'image')
+        
+        response = add_content_handler(request, file_id, image_id)
+        log.info("Отправляю контент на сервер")
+        return response
+    except Exception as e:
+        log.error(f"Ошибка: {e}")
+        return make_response({'error': f"{e}"}, HTTPStatus.BAD_REQUEST)
+
 
 if __name__ == "__main__":
     app.config["WTF_CSRF_ENABLED"] = False
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port='5000', debug=True)
