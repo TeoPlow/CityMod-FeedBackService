@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="{{ url_for('static', filename='images/favicon/site.webmanifest') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityMod – Admin</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}">
+</head>
+<body>
+
+    <!-- Название -->
+    <nav class="namebar">
+        <a href="/">CityMod - Admin</a>
+    </nav>
+
+    <!-- Контакты -->
+    <p class="contacts">Contacts - citymodz@yandex.com</p>
+
+    <!-- Светило -->
+    <nav class="orb">
+        <button id="toggleThemeButton" style="width: 100%; height: 100%; background: none; border: none; cursor: pointer;"></button>
+        <img src="static/images/sun.png" alt="Sun">
+    </nav>
+    <!-- Слои изображений -->
+    <div class="background-layers">
+        <img src="static/images/sky.png" alt="sky" id="backgroundSky" class="background-layer">
+        <img src="static/images/gray_city.png" alt="gray_city" id="backgroundGrayCity" class="background-layer ">
+        <img src="static/images/black_city.png" alt="black_city" class="background-layer">
+    </div>
+
+    <div class="add-content-container">
+        <h1>Add Content</h1>
+        <!-- Вкладки -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="add-mod">Add Mod</button>
+            <button class="tab-button" data-tab="add-map">Add Map</button>
+            <button class="tab-button" data-tab="add-other">Add Other Content</button>
+        </div>
+    
+        <!-- Содержимое вкладок -->
+        <div class="tab-content" id="add-mod">
+            <form enctype="multipart/form-data">
+                <input type="hidden" name="content-type" value="mod-content">
+
+                <label for="mod-name">Name:</label>
+                <input type="text" id="mod-name" name="mod-name" required>
+    
+                <label for="release-channel">Release Channel:</label>
+                <select id="release-channel" name="release-channel">
+                    <option value="Release">Release</option>
+                    <option value="Beta">Beta</option>
+                    <option value="Alpha">Alpha</option>
+                </select>
+    
+                <label for="mod-version">Version:</label>
+                <input type="text" id="mod-version" name="mod-version" required>
+    
+                <label for="game-versions">Game Versions:</label>
+                <input type="text" id="game-versions" name="game-versions" placeholder="e.g., 1.16.5, 1.18.2" required>
+    
+                <label for="mod-changelog">Changelog:</label>
+                <textarea id="mod-changelog" name="mod-changelog" required></textarea>
+    
+                <label for="mod-file">Mod File:</label>
+                <input type="file" id="file" name="file" required>
+    
+                <label for="mod-image">Image:</label>
+                <input type="file" id="image" name="image" required>
+
+                <!-- Заплатка для имени файла -->
+                <input type="hidden" id="fileName" name="fileName" value="name">
+    
+                <button type="submit">Submit Mod</button>
+            </form>
+        </div>
+    
+        <div class="tab-content" id="add-map" style="display: none;">
+            <form enctype="multipart/form-data">
+                <input type="hidden" name="content-type" value="map-content">
+
+                <label for="map-name">Name:</label>
+                <input type="text" id="map-name" name="map-name" required>
+    
+                <label for="game-version">Game Version:</label>
+                <input type="text" id="game-version" name="game-version" placeholder="e.g., 1.16.5, 1.18.2" required>
+    
+                <label for="map-mod-version">Mod Version:</label>
+                <input type="text" id="map-mod-version" name="map-mod-version">
+    
+                <label for="map-info">Info:</label>
+                <textarea id="map-info" name="map-info" required></textarea>
+    
+                <label for="map-file">Map File:</label>
+                <input type="file" id="file" name="file" required>
+    
+                <label for="map-image">Image:</label>
+                <input type="file" id="image" name="image" required>
+
+                <!-- Заплатка для имени файла -->
+                <input type="hidden" id="fileName" name="fileName" value="name">
+    
+                <button type="submit">Submit Map</button>
+            </form>
+        </div>
+    
+        <div class="tab-content" id="add-other" style="display: none;">
+            <form enctype="multipart/form-data">
+                <input type="hidden" name="content-type" value="other-content">
+
+                <label for="content-name">Name:</label>
+                <input type="text" id="content-name" name="content-name" required>
+    
+                <label for="content-info">Info:</label>
+                <textarea id="content-info" name="content-info" required></textarea>
+    
+                <label for="content-file">Content File:</label>
+                <input type="file" id="file" name="file" required>
+    
+                <label for="content-image">Image:</label>
+                <input type="file" id="image" name="image" required>
+
+                <!-- Заплатка для имени файла -->
+                <input type="hidden" id="fileName" name="fileName" value="name">
+    
+                <button type="submit">Submit Content</button>
+            </form>
+        </div>
+    </div>
+    
+    
+
+    <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabButtons = document.querySelectorAll(".tab-button");
+            const tabContents = document.querySelectorAll(".tab-content");
+
+            tabButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    // Убираем активность у всех кнопок
+                    tabButtons.forEach((btn) => btn.classList.remove("active"));
+                    // Прячем все вкладки
+                    tabContents.forEach((content) => (content.style.display = "none"));
+
+                    // Активируем текущую кнопку и вкладку
+                    button.classList.add("active");
+                    const tabId = button.getAttribute("data-tab");
+                    document.getElementById(tabId).style.display = "block";
+                });
+            });
+
+            // Функция отправки данных формы
+            async function sendFormData(form, contentType) {
+                const formData = new FormData(form);
+
+                try {
+                    const response = await fetch('/add_content', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        const responseData = await response.json();
+                        alert(`Success: ${responseData.message}`);
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Error: ${errorData.error}`);
+                    }
+                } catch (error) {
+                    console.error('Error sending data:', error);
+                    alert(`Error: ${error.message}`);
+                }
+            }
+
+            // Обработка формы Add Mod
+            const addModForm = document.querySelector("#add-mod form");
+            addModForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                sendFormData(addModForm);
+            });
+
+            // Обработка формы Add Map
+            const addMapForm = document.querySelector("#add-map form");
+            addMapForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                sendFormData(addMapForm);
+            });
+
+            // Обработка формы Add Other Content
+            const addOtherForm = document.querySelector("#add-other form");
+            addOtherForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                sendFormData(addOtherForm);
+            });
+        });
+    </script>
+</body>
+</html>
