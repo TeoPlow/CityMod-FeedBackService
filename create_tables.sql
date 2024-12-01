@@ -47,9 +47,25 @@ CREATE TABLE other_content (
 CREATE TABLE maps (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    changelog TEXT,
+    game_versions TEXT NOT NULL,
+    mod_version TEXT NOT NULL,
+    info TEXT,
     images_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     files_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
+    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE objects_in_mod (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    status TEXT NOT NULL,
+    mod_id TEXT NOT NULL,
+    path TEXT NOT NULL,
+    info TEXT NOT NULL,
+    version_added TEXT,
+    image_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
+    model_id BIGINT REFERENCES Files(id) ON DELETE SET NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
