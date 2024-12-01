@@ -16,9 +16,14 @@ logging.config.dictConfig(logger_config)
 def send_feedback_handler(request, file_id: int) -> Response:
     """
     Добавляет feedback от пользователя в БД
+        Параметры:
+            request: запрос в виде form
+            file_id (int): ID файла
+        Возвращает:
+            Responce об успешном добавлении фидбэка.
     """
     log.debug(f"Добавляю feedback в БД")
-    user_id = get_user_id()
+    user_id: int = get_user_id()
     feedback_message = request.form.get('feedback')
     feedback_type = request.form.get('feedbackType')
     log.debug(f"Получил на вход {feedback_type}: '{feedback_message}' и файлы c id: {file_id} от пользователя c id: {user_id}")

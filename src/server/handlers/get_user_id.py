@@ -29,8 +29,8 @@ def get_user_id() -> int:
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        user_id = payload.get('user_id')
-        log.debug("ID пользователя получен успешно")
+        user_id: int = payload.get('user_id')
+        log.debug(f"ID пользователя получен успешно: {user_id}")
         return user_id
     except jwt.ExpiredSignatureError as e:
         log.warning(f"ID пользователя НЕ получен: {e}")

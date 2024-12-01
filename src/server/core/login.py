@@ -1,4 +1,4 @@
-from config import logger_config
+from config import logger_config, ADMINS_IDS
 from server.database.tables import User
 from server.handlers.get_user_id import get_user_id
 from functools import wraps
@@ -42,7 +42,7 @@ def user_login(data: dict[str, Any]) -> Response:
     remember_me = data.get('remember_me', False)
     log.debug(f"Запоминалка: {remember_me}")
 
-    user_id = User.check_user_existence(email_or_name)[0]['id']
+    user_id = User.check_user_existence(email_or_name)
     log.debug(f"Получил user_id: {user_id}")
 
     if not user_id or not User.check_password(user_id, password):
@@ -60,8 +60,7 @@ def user_login(data: dict[str, Any]) -> Response:
     response = make_response({'token': token}, HTTPStatus.OK)
     response.set_cookie(
         'auth_token', token, 
-        httponly=True, 
-        secure=True, 
+        httponly=True,
         max_age=expiration.total_seconds()
     )
 
@@ -75,5 +74,20 @@ def login_required(f):
             request.user_id = get_user_id()
         except:
             return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        try:
+            log.debug(f"Провожу проверку на админа")
+            request.user_id = get_user_id()
+            if request.user_id not in ADMINS_IDS:
+                log.debug(f"Пользователь НЕ админ")
+                raise
+            log.debug(f"Добро пожаловать, админ!")
+        except:
+            return redirect(url_for('home'))
         return f(*args, **kwargs)
     return decorated_function

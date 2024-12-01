@@ -11,12 +11,16 @@ root_dir = os.path.dirname(os.path.abspath(__file__))
 DATABASE_URL = "postgresql://postgres@127.0.0.1:5432/citymod_feedback"
 
 
-# Путь к базе с файлами ОТНОСИТЕЛЬНО папки static
+# Путь к базе с файлами
 FILEBASE_PATH = "/home/teoblow/Programs/CityMod-FeedBackService/src/static/filebase"
 
 
 # Поддерживаемые расширения
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'jar'}
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'jar', 'zip', 'rar', 'pdn'}
+
+
+# ID администраторов
+ADMINS_IDS = {2, }
 
 
 # Класс ловитель ошибок

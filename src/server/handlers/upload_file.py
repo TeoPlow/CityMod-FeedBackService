@@ -28,26 +28,27 @@ def get_file_type(filename: str) -> Optional[str]:
     else:
         return None
 
-def upload_file_handler(request) -> int:
+def upload_file_handler(request, file_key: str) -> int:
     """
     Загружает файл на сервер и в БД
         Параметры:
             request: Имя пользователя
+            file_key (str): Ключ, по которому передаётся файл внутри request.files
 
         Возвращает:
             int: ID загруженного файла 
     """
     log.info("Загружаю файл на сервер и в БД")
-    if 'file' not in request.files:
-        log.error("Файл не добавлен: Его нет в запросе")
+    if file_key not in request.files:
+        log.error(f"Файл не добавлен: Его нет в запросе - {file_key}")
         raise UnauthorizedError("The file was not added: It is not in the request")
     
-    file = request.files['file']
+    file = request.files[file_key]
     file_name = request.form.get('fileName')
     file_info = request.form.get('fileInfo')
 
     if file.filename == '' or not file_name:
-        log.error("Файл не добавлен: Имя файла пустое")
+        log.warning("Файл не добавлен: Имя файла пустое")
         raise UnauthorizedError("The file was not added: File name is empty")
 
     file_type = get_file_type(file.filename)

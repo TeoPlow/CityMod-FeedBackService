@@ -68,7 +68,7 @@ class User:
         result = execute_query(query, (email_or_name, email_or_name), fetch=True)
         if result:
             log.debug("Пользователь существует.")
-            return result
+            return result[0]['id']
         else:
             log.debug("Пользователя НЕ существует")
             return False
@@ -118,12 +118,12 @@ class File:
         return execute_query(query, (file_type, file_name, file_info, file_path), fetch=True)[0]['id']
 
     @staticmethod
-    def link(file_id: str, feedback_id: str) -> int:
+    def link(file_id: int, feedback_id: int) -> int:
         """
         Линкует файл с фидбэком в БД.
             Параметры:
-                file_id (str): ID файла
-                feedback_id (str): ID фидбэка
+                file_id (int): ID файла
+                feedback_id (int): ID фидбэка
 
             Возвращает:
                 int: ID созданной записи линковки
@@ -136,11 +136,11 @@ class File:
         return execute_query(query, (feedback_id, file_id), fetch=True)[0]['id']
 
     @staticmethod
-    def get_path(file_id: str) -> str:
+    def get_path(file_id: int) -> str:
         """
         Возвращает путь к файлу через его ID.
             Параметры:
-                file_id (str): ID файла
+                file_id (int): ID файла
 
             Возвращает:
                 str: Путь до файла.
@@ -153,7 +153,7 @@ class File:
 
 class Mod:
     @staticmethod
-    def create(name: str, release_channel: str, version: str, game_versions: str, changelog: str, files_id: int) -> int:
+    def create(name: str, release_channel: str, version: str, game_versions: str, changelog: str, files_id: int, images_id: int) -> int:
         """
         Добавляет новый мод в БД.
             Параметры:
@@ -163,16 +163,17 @@ class Mod:
                 game_versions (str): Поддерживаемые версии игры
                 changelog (str): Описание изменений
                 files_id (int): ID связанного файла
+                images_id (int): ID связанного изображения
 
             Возвращает:
                 int: ID созданного мода
         """
         log.debug("Добавляю мод")
         query = """
-        INSERT INTO mods (name, release_channel, version, game_versions, changelog, files_id)
-        VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;
+        INSERT INTO mods (name, release_channel, version, game_versions, changelog, files_id, images_id)
+        VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id;
         """
-        return execute_query(query, (name, release_channel, version, game_versions, changelog, files_id), fetch=True)[0]['id']
+        return execute_query(query, (name, release_channel, version, game_versions, changelog, files_id, images_id), fetch=True)[0]['id']
 
     @staticmethod
     def get_mods() -> List[dict()]:
@@ -190,23 +191,26 @@ class Mod:
 
 class Map:
     @staticmethod
-    def create(name: str, info: str, files_id: int) -> int:
+    def create(name: str, game_versions: str, mod_version: str, info: str, files_id: int, images_id: int) -> int:
         """
         Добавляет новую карту в БД.
             Параметры:
                 name (str): Название карты
                 info (str): Описание карты
+                game_versions (str): Версии игры
+                mod_version (str): Версия мода
                 files_id (int): ID связанного файла
+                images_id (int): ID связанного изображения
 
             Возвращает:
                 int: ID созданной карты
         """
         log.debug("Добавляю карту")
         query = """
-        INSERT INTO maps (name, info, files_id)
-        VALUES (%s, %s, %s) RETURNING id;
+        INSERT INTO maps (name, game_versions, mod_version, info, files_id, images_id)
+        VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;
         """
-        return execute_query(query, (name, info, files_id), fetch=True)[0]['id']
+        return execute_query(query, (name, game_versions, mod_version, info, files_id, images_id), fetch=True)[0]['id']
 
     @staticmethod
     def get_maps() -> List[dict()]:
@@ -224,23 +228,24 @@ class Map:
 
 class OtherContent:
     @staticmethod
-    def create(name: str, info: str, files_id: int) -> int:
+    def create(name: str, info: str, files_id: int, images_id: int) -> int:
         """
         Добавляет другой тип контента в БД.
             Параметры:
                 name (str): Название контента
                 info (str): Описание контента
                 files_id (int): ID связанного файла
+                images_id (int): ID связанного изображения
 
             Возвращает:
                 int: ID созданного контента
         """
         log.debug("Добавляю другой контент")
         query = """
-        INSERT INTO maps (name, info, files_id)
-        VALUES (%s, %s, %s) RETURNING id;
+        INSERT INTO other_content (name, info, files_id, images_id)
+        VALUES (%s, %s, %s, %s) RETURNING id;
         """
-        return execute_query(query, (name, info, files_id), fetch=True)[0]['id']
+        return execute_query(query, (name, info, files_id, images_id), fetch=True)[0]['id']
 
     @staticmethod
     def get_other_contents() -> List[dict()]:
