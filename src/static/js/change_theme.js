@@ -13,46 +13,41 @@ function getCookie(name) {
     return null;
 }
 
-// Проверяем, есть ли информация о выбранной теме в cookie
-let isDay = getCookie("theme") === "day";
-
-// Применяем сохраненную тему при загрузке страницы
-if (isDay) {
-    orbImage.src = "static/images/sun.png";
-    backgroundSky.src = "static/images/sky.png";
-    backgroundGrayCity.src = "static/images/gray_city.png";
-    body.classList.remove("night-theme");
-} else {
-    orbImage.src = "static/images/moon.png";
-    backgroundSky.src = "static/images/night_sky.png";
-    backgroundGrayCity.src = "static/images/gray_city_night.png"
-    body.classList.add("night-theme");
-}
-
 // Функция для установки cookie
 function setCookie(name, value, days) {
     const d = new Date();
-    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000)); // Срок действия cookie
+    d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000); // Срок действия cookie
     const expires = "expires=" + d.toUTCString();
     document.cookie = `${name}=${value}; ${expires}; path=/`;
 }
 
-// Функция переключения темы
-toggleButton.addEventListener("click", () => {
+// Проверяем, есть ли информация о выбранной теме в cookie
+let isDay = true; // Значение по умолчанию
+if (getCookie("theme") === "night") {
+    isDay = false;
+}
+
+// Применяем сохраненную тему при загрузке страницы
+function applyTheme() {
     if (isDay) {
-        // Переключение на дневную тему
         orbImage.src = "static/images/sun.png";
         backgroundSky.src = "static/images/sky.png";
-        backgroundGrayCity.src = "static/images/gray_city.png"
+        backgroundGrayCity.src = "static/images/gray_city.png";
         body.classList.remove("night-theme");
-        setCookie("theme", "day", 365); // Сохраняем выбранную тему на 365 дней
     } else {
-        // Переключение на ночную тему
         orbImage.src = "static/images/moon.png";
         backgroundSky.src = "static/images/night_sky.png";
-        backgroundGrayCity.src = "static/images/gray_city_night.png"
+        backgroundGrayCity.src = "static/images/gray_city_night.png";
         body.classList.add("night-theme");
-        setCookie("theme", "night", 365); // Сохраняем выбранную тему на 365 дней
     }
+}
+
+// Сначала применяем тему
+applyTheme();
+
+// Обработчик переключения темы
+toggleButton.addEventListener("click", () => {
     isDay = !isDay; // Переключаем состояние
+    setCookie("theme", isDay ? "day" : "night", 365); // Сохраняем выбранную тему
+    applyTheme(); // Применяем изменения
 });
