@@ -47,6 +47,19 @@
     <!-- Список модов из БД -->
     <div class="mods-container">
         <h1>Available Mods</h1>
+        <div class="mod-filter">
+            <form method="GET" action="/mods">
+                <label for="mod-type">Filter by Version:</label>
+                <select id="mod-type" name="mod_type" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="1.16.5" {% if request.args.get('mod_type') == '1.16.5' %}selected{% endif %}>1.16.5</option>
+                    <option value="1.18.2" {% if request.args.get('mod_type') == '1.18.2' %}selected{% endif %}>1.18.2</option>
+                    <option value="1.19.4" {% if request.args.get('mod_type') == '1.19.4' %}selected{% endif %}>1.19.4</option>
+                    <option value="1.20.6" {% if request.args.get('mod_type') == '1.20.6' %}selected{% endif %}>1.20.6</option>
+                </select>
+            </form>
+        </div>
+
         {% for mod in mods %}
         <div class="mod-card">
             <h2>{{ mod.name }} {{ mod.release_channel }} {{ mod.version }}</h2>
