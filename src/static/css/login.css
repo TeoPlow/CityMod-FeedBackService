@@ -1,0 +1,109 @@
+.inputform {
+    position: absolute; /* Позволяет точно задавать расположение */
+    top: 50%; /* Центрирование по вертикали */
+    left: 50%; /* Центрирование по горизонтали */
+    transform: translate(-50%, -50%); /* Сдвиг для точного центрирования */
+    width: 500px; /* Ширина окна */
+    padding: 20px; /* Внутренние отступы */
+    background-color: #ffffff98; /* Полупрозрачный белый фон */
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень для объема */
+    z-index: 5; /* Уровень слоя */
+}
+
+.inputform h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+body.night-theme .inputform h1 {
+    color: #ececec;
+}
+
+.inputform textarea {
+    width: 100%; /* Ширина на всю форму */
+    height: 250px; /* Высота поля */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 15px; /* Отступ между элементами */
+    border: 1px solid #ccc; /* Граница полей ввода */
+    border-radius: 6px;
+    font-size: 16px; /* Размер шрифта */
+    resize: vertical; /* Разрешить изменение размера только по вертикали */
+    scrollbar-width: none; /* Для Firefox */
+    box-sizing: border-box; /* Учитывать отступы в размерах */
+}
+
+body.night-theme .inputform textarea {
+    background-color: #101010;
+    color: #ffffff;
+    border: 1px solid #3b3b3b;
+}
+
+/* Дополнительные стили для элементов внутри формы */
+.inputform input {
+    width: 100%; /* Ширина на всю форму */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 15px; /* Отступ между элементами */
+    border: 1px solid #ccc; /* Граница полей ввода */
+    border-radius: 6px;
+    font-size: 16px; /* Размер шрифта */
+}
+
+body.night-theme .inputform input {
+    background-color: #101010;
+    color: #ffffff;
+    border: 1px solid #3b3b3b;
+}
+
+.inputform button {
+    width: 100%; /* Кнопка на всю ширину формы */
+    padding: 10px; /* Внутренние отступы */
+    background-color: #0066cc; /* Зеленый цвет кнопки */
+    color: white; /* Белый текст */
+    border: none; /* Без границ */
+    border-radius: 6px;
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+}
+
+.inputform button:hover {
+    background-color: #0055a9; /* Темнее при наведении */
+}
+
+.inputform label {
+    font-size: 16px;
+    color: #000000;
+}
+
+body.night-theme .inputform label {
+    color: #e6e6e6;
+}
+
+.inputform nav {
+    padding: 10px; /* Внутренние отступы */
+    text-align: center;
+    margin-bottom: 20px;
+    color: white; /* Белый текст */
+    border: none; /* Без границ */
+    border-radius: 6px;
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+}
+
+/* Контейнер для чекбокса и текста */
+.remember-me-container {
+    display: inline-flex;
+    align-items: center; /* Центрируем элементы по вертикали */
+    margin-bottom: 0px; /* Отступ между элементами */
+}
+
+.remember-me-container input {
+    margin-left: 0px; /* Отступ между чекбоксом и текстом */
+}
+
+body.night-theme .remember-me-container input {
+    background-color: #101010;
+    border: 1px solid #3b3b3b;
+}

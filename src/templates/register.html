@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="{{ url_for('static', filename='images/favicon/site.webmanifest') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityMod – Register</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/register.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}">
+</head>
+<body>
+    <!-- Навигация - Репорты -->
+    <nav class="navbar">
+        <a href="/send_review">Send Review</a>
+        <a href="/send_bug_report">Send Bug Report</a>
+        <a href="/send_offer">Send Offer</a>
+    </nav>
+
+    <!-- Навигация - Контент -->
+    <nav class="contentbar">
+        <a href="/mods">Mods</a>
+        <a href="/maps">Maps</a>
+        <a href="/mod_elements">Mod Elements</a>
+        <a href="/other_content">Other</a>
+    </nav>
+
+    <!-- Название -->
+    <nav class="namebar">
+        <a href="/">CityMod - Register</a>
+    </nav>
+
+    <!-- Контакты -->
+    <p class="contacts">Contacts - citymodz@yandex.com</p>
+
+    <!-- Светило -->
+    <nav class="orb">
+        <button id="toggleThemeButton" style="width: 100%; height: 100%; background: none; border: none; cursor: pointer;"></button>
+        <img src="static/images/sun.png" alt="Sun">
+    </nav>
+    <!-- Слои изображений -->
+    <div class="background-layers">
+        <img src="static/images/sky.png" alt="sky" id="backgroundSky" class="background-layer">
+        <img src="static/images/gray_city.png" alt="gray_city" id="backgroundGrayCity" class="background-layer ">
+        <img src="static/images/black_city.png" alt="black_city" class="background-layer">
+    </div>
+    <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
+
+    <form id="registerForm" class="inputform">
+        <h1>Registration</h1>
+        <input type="text" name="name" placeholder="Username" required>
+        <input type="text" name="email" placeholder="Email" required>
+        <input type="text" name="password" placeholder="Password" required>
+        <nav class="to_login">
+            <a href="/login">Log in</a>
+        </nav>
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <script>
+        const form = document.getElementById("registerForm");
+    
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+    
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+    
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+    
+            if (response.ok) {
+                alert("Register successful!");
+            } else {
+                const errorData = await response.json();
+                alert(`Register failed: ${errorData.error}`);
+            }
+        });
+    </script>
+</body>
+</html>

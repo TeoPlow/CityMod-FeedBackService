@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="{{ url_for('static', filename='images/favicon/site.webmanifest') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityMod – Mods</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/mods.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}">
+</head>
+<body>
+    <!-- Навигация - Репорты -->
+    <nav class="navbar">
+        <a href="/send_review">Send Review</a>
+        <a href="/send_bug_report">Send Bug Report</a>
+        <a href="/send_offer">Send Offer</a>
+    </nav>
+
+    <!-- Навигация - Контент -->
+    <nav class="contentbar">
+        <a href="/mods">Mods</a>
+        <a href="/maps">Maps</a>
+        <a href="/mod_elements">Mod Elements</a>
+        <a href="/other_content">Other</a>
+    </nav>
+
+    <!-- Название -->
+    <nav class="namebar">
+        <a href="/">CityMod - Mods</a>
+    </nav>
+
+    <!-- Контакты -->
+    <p class="contacts">Contacts - citymodz@yandex.com</p>
+
+    <!-- Светило -->
+    <nav class="orb">
+        <button id="toggleThemeButton" style="width: 100%; height: 100%; background: none; border: none; cursor: pointer;"></button>
+        <img src="static/images/sun.png" alt="Sun">
+    </nav>
+    <!-- Слои изображений -->
+    <div class="background-layers">
+        <img src="static/images/sky.png" alt="sky" id="backgroundSky" class="background-layer">
+        <img src="static/images/gray_city.png" alt="gray_city" id="backgroundGrayCity" class="background-layer ">
+        <img src="static/images/black_city.png" alt="black_city" class="background-layer">
+    </div>
+
+    <!-- Список модов из БД -->
+    <div class="mods-container">
+        <h1>Available Mods</h1>
+        <div class="mod-filter">
+            <form method="GET" action="/mods">
+                <label for="mod-type">Filter by Version:</label>
+                <select id="mod-type" name="mod_type" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="1.16.5" {% if request.args.get('mod_type') == '1.16.5' %}selected{% endif %}>1.16.5</option>
+                    <option value="1.18.2" {% if request.args.get('mod_type') == '1.18.2' %}selected{% endif %}>1.18.2</option>
+                    <option value="1.19.4" {% if request.args.get('mod_type') == '1.19.4' %}selected{% endif %}>1.19.4</option>
+                    <option value="1.20.6" {% if request.args.get('mod_type') == '1.20.6' %}selected{% endif %}>1.20.6</option>
+                </select>
+            </form>
+        </div>
+
+        {% for mod in mods %}
+        <div class="mod-card">
+            <h2>{{ mod.name }} {{ mod.release_channel }} {{ mod.version }}</h2>
+            <h3>{{ mod.game_versions }}</h3>
+
+            <img src="{{ url_for('static', filename=mod.images_path) }}" alt="Mod Image">
+            <a href="{{ url_for('static', filename=mod.files_path) }}" download>Download</a>
+
+            <button class="toggle-changelog" onclick="toggleChangelog({{ loop.index }})">
+                Show Change Log
+            </button>
+            <div id="changelog-{{ loop.index }}" class="changelog" style="display: none;">
+                <p>{{ mod.changelog }}</p>
+            </div>
+
+            <p><strong>Release Date: </strong> {{ mod.time }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
+    <script>
+        function toggleChangelog(index) {
+            const changelog = document.getElementById(`changelog-${index}`);
+            const button = document.querySelector(`.toggle-changelog[onclick='toggleChangelog(${index})']`);
+            if (changelog.style.display === "none") {
+                changelog.style.display = "block";
+                button.textContent = "Hide Change Log";
+            } else {
+                changelog.style.display = "none";
+                button.textContent = "Show Change Log";
+            }
+        }
+    </script>
+</body>
+</html>

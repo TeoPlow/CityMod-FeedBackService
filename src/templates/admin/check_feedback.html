@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="{{ url_for('static', filename='images/favicon/site.webmanifest') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityMod – Feedback</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/check_feedback.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}">
+</head>
+<body>
+    <!-- Навигация - Репорты -->
+    <nav class="navbar">
+        <a href="/admin">Add Content</a>
+    </nav>
+
+    <!-- Название -->
+    <nav class="namebar">
+        <a href="/">CityMod - Feedback</a>
+    </nav>
+
+    <!-- Контакты -->
+    <p class="contacts">Contacts - citymodz@yandex.com</p>
+
+    <!-- Светило -->
+    <nav class="orb">
+        <button id="toggleThemeButton" style="width: 100%; height: 100%; background: none; border: none; cursor: pointer;"></button>
+        <img src="static/images/sun.png" alt="Sun">
+    </nav>
+
+    <!-- Слои изображений -->
+    <div class="background-layers">
+        <img src="static/images/sky.png" alt="sky" id="backgroundSky" class="background-layer">
+        <img src="static/images/gray_city.png" alt="gray_city" id="backgroundGrayCity" class="background-layer ">
+        <img src="static/images/black_city.png" alt="black_city" class="background-layer">
+    </div>
+
+    <!-- Список репортов из БД -->
+    <div class="feedback-container">
+        <h1>Feedback</h1>
+        <div class="feedback-filter">
+            <form method="GET" action="/check_feedback">
+                <label for="feedback-type">Filter by Type:</label>
+                <select id="feedback-type" name="feedback_type" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="bug_report" {% if request.args.get('feedback_type') == 'bug_report' %}selected{% endif %}>Bug Report</option>
+                    <option value="review" {% if request.args.get('feedback_type') == 'review' %}selected{% endif %}>Review</option>
+                    <option value="offer" {% if request.args.get('feedback_type') == 'offer' %}selected{% endif %}>Offer</option>
+                </select>
+            </form>
+        </div>
+
+        {% for feedback in feedbacks %}
+        <div class="feedback-card">
+            <h2>{{ feedback.name }} - ({{ feedback.user_id }})</h2>
+            <h3>{{ feedback.type }}</h3>
+
+            {% if feedback.file_path %}
+            <a href="{{ url_for('static', filename=feedback.file_path) }}" download>Download</a>
+            {% endif %}
+
+            <button class="toggle-changelog" onclick="toggleChangelog({{ loop.index }})">
+                Show Message
+            </button>
+            <div id="changelog-{{ loop.index }}" class="changelog" style="display: none;">
+                <p>{{ feedback.message }}</p>
+            </div>
+
+            <p>{{ feedback.time }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/change_theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scale_control.js') }}"></script>
+    <script>
+        function toggleChangelog(index) {
+            const changelog = document.getElementById(`changelog-${index}`);
+            const button = document.querySelector(`.toggle-changelog[onclick='toggleChangelog(${index})']`);
+            if (changelog.style.display === "none") {
+                changelog.style.display = "block";
+                button.textContent = "Hide Message";
+            } else {
+                changelog.style.display = "none";
+                button.textContent = "Show Message";
+            }
+        }
+    </script>
+</body>
+</html>
