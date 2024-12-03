@@ -131,3 +131,60 @@ body.night-theme .mod-card p {
     background-color: #004b99;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* Оформление формы выбора типа фидбэка */
+.mod-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+}
+
+body.night-theme .mod-filter {
+    background-color: #3b3b3baa;
+}
+
+/* Оформление метки формы */
+.mod-filter label {
+    margin-right: 10px;
+    font-size: 16px;
+    color: #000;
+}
+
+body.night-theme .mod-filter label {
+    color: #dedede;
+}
+
+/* Оформление выпадающего списка */
+.mod-filter select {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.mod-filter select:focus {
+    background-color: #fff;
+    border-color: #0066cc;
+    box-shadow: 0 0 4px rgba(0, 102, 204, 0.3);
+}
+
+body.night-theme .mod-filter select {
+    color: #dedede;
+    background-color: #282828;
+    border: 1px solid #555;
+}
+
+body.night-theme .mod-filter select:focus {
+    background-color: #3b3b3b;
+    border-color: #004b99;
+}

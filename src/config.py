@@ -20,7 +20,7 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'jar', 'zip', '
 
 
 # ID пользователей, которые будут администраторами
-ADMINS_IDS = {2, }
+ADMINS_IDS = {1, }
 
 
 # Класс ловитель ошибок

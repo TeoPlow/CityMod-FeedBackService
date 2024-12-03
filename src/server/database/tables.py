@@ -73,6 +73,22 @@ class User:
             log.debug("Пользователя НЕ существует")
             return False
 
+    @staticmethod
+    def get_name(file_id: int) -> str:
+        """
+        Возвращает имя пользователя через его ID.
+            Параметры:
+                file_id (int): ID файла
+
+            Возвращает:
+                str: Имя пользователя.
+        """
+        log.debug("Получаю имя пользователя")
+        query = """
+        SELECT name FROM users WHERE id = %s;
+        """
+        return execute_query(query, (file_id,), fetch=True)[0]['name']
+
 
 class Feedback:
     @staticmethod
@@ -94,6 +110,25 @@ class Feedback:
         VALUES (%s, %s, %s, %s) RETURNING id;
         """
         return execute_query(query, (user_id, feedback_type, message, files_id), fetch=True)[0]['id']
+
+    @staticmethod
+    def get_feedback(feedback_type: str = '') -> List[dict()]:
+        """
+        Получает список всех фидбэков из БД.
+            Параметры:
+                feedback_type (str): Тип фидбэка для фильтрации.
+
+            Возвращает:
+                list: Список фидбэков.
+        """
+        log.debug("Получаю все фидбэки из БД")
+        if feedback_type != '':
+            where_type = f"WHERE type = '{feedback_type}'"
+        else:
+            where_type = ''
+
+        query = "SELECT * FROM feedback " + where_type + " ORDER BY time desc;"
+        return execute_query(query, fetch=True)
 
 
 class File:
@@ -176,16 +211,22 @@ class Mod:
         return execute_query(query, (name, release_channel, version, game_versions, changelog, files_id, images_id), fetch=True)[0]['id']
 
     @staticmethod
-    def get_mods() -> List[dict()]:
+    def get_mods(mod_type: str = '') -> List[dict()]:
         """
-        Получает список всех модов из БД.        
+        Получает список всех модов из БД.   
+            Параметры:
+                mod_type (str): Тип (версия) мода для фильтрации.    
+
             Возвращает:
                 list: Список модов.
         """
         log.debug("Получаю все моды из БД")
-        query = """
-        SELECT * FROM mods ORDER BY version desc;
-        """
+        if mod_type != '':
+            where_type = f"WHERE game_versions = '{mod_type}'"
+        else:
+            where_type = ''
+
+        query = "SELECT * FROM mods " + where_type + " ORDER BY version desc;"
         return execute_query(query, fetch=True)
 
 
