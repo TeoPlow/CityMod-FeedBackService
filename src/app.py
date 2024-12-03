@@ -3,6 +3,7 @@ from server.database.tables import Mod
 from server.core.registration import user_register
 from server.core.login import user_login, login_required, admin_required
 from server.handlers.sends import send_feedback_handler
+from server.handlers.get_feedback import get_feedback_handler
 from server.handlers.upload_file import upload_file_handler
 from server.handlers.get_mods import get_mods_handler
 from server.handlers.get_maps import get_maps_handler
@@ -71,7 +72,8 @@ def send_feedback():
 @app.route('/mods', methods=['GET'])
 def mods():
     log.info("Вывожу список модов")
-    mods_list = get_mods_handler()
+    mod_type = request.args.get('mod_type', '')
+    mods_list = get_mods_handler(mod_type=mod_type)
 
     return render_template('mods.html', mods=mods_list)
 
@@ -136,10 +138,20 @@ def login():
 @app.route('/admin', methods=['GET'])
 @admin_required
 def admin():
-    return render_template("admin.html")
+    return render_template("admin/admin.html")
 
 
-@app.route('/add_content', methods=['POST'])
+@app.route('/check_feedback', methods=['GET'])
+@admin_required
+def check_feedback():
+    log.info("Вывожу список фидбэка")
+    feedback_type = request.args.get('feedback_type', '')
+    feedback_list = get_feedback_handler(feedback_type=feedback_type)
+
+    return render_template("admin/check_feedback.html", feedbacks=feedback_list)
+
+
+@app.route('/admin/add_content', methods=['POST'])
 @admin_required
 def add_content():
     try:
