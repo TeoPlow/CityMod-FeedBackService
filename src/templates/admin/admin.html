@@ -15,6 +15,11 @@
         <a href="/">CityMod - Admin</a>
     </nav>
 
+    <!-- Просмотр отзывов -->
+    <nav class="navbar">
+        <a href="/check_feedback">Check Feedback</a>
+    </nav>
+
     <!-- Контакты -->
     <p class="contacts">Contacts - citymodz@yandex.com</p>
 
@@ -143,7 +148,7 @@
                 <label for="version_added">Game version that was added to:</label>
                 <input type="text" id="version_added" name="version_added" required>
 
-                <label for="file_id">Model:</label>
+                <label for="file_id">File:</label>
                 <input type="file" id="file" name="file" required>
 
                 <label for="image_id">Image:</label>
@@ -206,7 +211,7 @@
                 const formData = new FormData(form);
 
                 try {
-                    const response = await fetch('/add_content', {
+                    const response = await fetch('/admin/add_content', {
                         method: 'POST',
                         body: formData,
                     });
